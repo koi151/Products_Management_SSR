@@ -81,7 +81,7 @@ module.exports.changeMulti = async (req, res) => {
       req.flash('success', `Update position for ${ids.length} products successful !`);
       break;
     case "delete-all":  
-      await Products.updateMany({ _id: {$in: ids} }, { 
+      await Product.updateMany({ _id: {$in: ids} }, { 
         deleted: true,
         deletedAt: Date()
       });
@@ -105,7 +105,7 @@ module.exports.changeMulti = async (req, res) => {
 module.exports.deleteItem = async (req, res) => {
   const id = req.params.id;
   // await Products.deleteOne({ _id: id }); // PERMANENTLY DELETE
-  await Products.updateOne({ _id: id }, { 
+  await Product.updateOne({ _id: id }, { 
     deleted: true,
     deletedAt: Date() 
   });
