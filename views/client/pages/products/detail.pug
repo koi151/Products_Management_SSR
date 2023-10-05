@@ -1,0 +1,31 @@
+extends ../../layouts/default.pug
+
+block main
+  .container.my-3
+    .row
+      .col-12
+        if (product.title)
+          h1(class="mb-4") #{product.title}
+        hr
+
+        if (product.price)
+          div(class="mb-4") Price: <b>#{product.price}$</b>
+
+        if (product.discountPercentage)
+          div(class="mb-4") Discount: <b>#{product.discountPercentage}%</b>
+
+        if (product.stock)
+          div(class="mb-4") Stock: <b>#{product.stock}</b>
+
+        if (product.thumbnail)
+          div(class="mb-4")
+            img(
+              src=product.thumbnail
+              style="width: 100px"
+            )
+
+        if (product.position)
+          div(class="mb-4") Position: <b>#{product.position}</b>
+
+        if (product.description)
+          div(class="mb-4") #{product.description}
