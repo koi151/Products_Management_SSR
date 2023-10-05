@@ -29,7 +29,7 @@ module.exports.index = async (req, res) => {
     currentPage: 1,
     totalPage: null
   }
-  const productsCount = await Product.count(criterias);
+  const productsCount = await Product.countDocuments(criterias);
   const paginationObject = paginationHelper(initPaginationObject, req.query, productsCount); 
 // END PAGINATION
 
