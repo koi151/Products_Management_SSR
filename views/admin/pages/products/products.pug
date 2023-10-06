@@ -4,7 +4,7 @@ include ../../mixins/filterStatus.pug
 include ../../mixins/formSearch.pug
 include ../../mixins/pagination.pug
 include ../../mixins/changeMulti.pug
-
+include ../../mixins/sort.pug
 include ../../mixins/alert.pug
 
 block main 
@@ -21,6 +21,13 @@ block main
         +filter-status(filterStatus)
       .col-6
         +form-search(keyword)
+  
+  .card.mb-3
+  .card-header Sắp xếp
+  .card-body
+    .row
+      .col-4
+        +sort()
 
   .card.mb-3
     .card-header List 

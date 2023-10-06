@@ -182,6 +182,41 @@ if (uploadImage) {
       uploadImageReview.src = image;
     }
   })
+}
 
+// SORTING PRODUCTS 
+const sort = document.querySelector('[sort]');
+if (sort) {
+  let url = new URL(window.location.href);
 
+  const sortSelected = sort.querySelector('[sort-select]');
+  const sortClear = sort.querySelector('[sort-clear]');
+
+  sortSelected.addEventListener('change', (e) => {
+    const value = e.target.value
+    const [sortKey, sortValue] = value.split('-');
+
+    url.searchParams.set("sortKey", sortKey);
+    url.searchParams.set("sortValue", sortValue);
+
+    window.location.href = url.href
+  })
+
+  // Display default select
+  const sortKeySelected = url.searchParams.get("sortKey");
+  const sortValueSelected = url.searchParams.get("sortValue");
+
+  if (sortKeySelected && sortValueSelected) {
+    const sortString = `${sortKeySelected}-${sortValueSelected}`;
+    const optionSelected = sort.querySelector(`option[value=${sortString}]`);
+    optionSelected.selected = true;
+  }
+
+  // Remove sorting
+  sortClear.addEventListener('click', () => {
+    url.searchParams.delete("sortKey");
+    url.searchParams.delete("sortValue");
+
+    window.location.href = url.href
+  })
 }
