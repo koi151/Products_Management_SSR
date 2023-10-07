@@ -1,7 +1,12 @@
 extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
 
 block main
   h1(class="mb-4") Products Category 
+
+  +alert-error(5000)
+  +alert-success(5000)
 
   .card.mb-3
     .card-header List
@@ -13,3 +18,75 @@ block main
             href=`/${adminPrefix}/products-category/create`
             class="btn btn-outline-success"
           ) + Add new
+
+      table(
+        class="table table-hover table-sm"
+      )
+        thead
+          tr
+            th Index
+            th Image
+            th Title
+            th Position
+            th Status
+            th Action 
+
+          tbody
+            each item, index in records
+              tr 
+                td
+                  input(
+                    type="checkbox"
+                    name="id"
+                    value=item.id
+                  )
+                td #{index + 1}
+                td
+                  img(
+                    src=item.thumbnail
+                    alt=item.title
+                    width="100px"
+                    height="auto"
+                  )
+                td #{item.title}
+                td
+                  input(
+                    type="number"
+                    value=item.position
+                    style="width: 60px"
+                    min="1"
+                    name="position"
+                  )
+                td
+                  if(item.status == "active")
+                    a(
+                      href="javascript:;"
+                      data-status=item.status
+                      data-id=item.id
+                      button-change-status
+                      class="badge badge-success"
+                    ) Hoạt động
+                  else
+                    a(
+                      href="javascript:;"
+                      data-status=item.status
+                      data-id=item.id
+                      button-change-status
+                      class="badge badge-danger"
+                    ) Dừng hoạt động
+                td
+                  a(
+                    href=`${prefixAdmin}/products-category/detail/${item.id}`
+                    class="btn btn-secondary btn-sm"
+                    ) Chi tiết
+                  a(
+                    href=`${prefixAdmin}/products-category/edit/${item.id}`
+                    class="btn btn-warning btn-sm"
+                    ) Sửa
+                  button(
+                    class="btn btn-danger btn-sm ml-1"
+                    button-delete
+                    data-id=item.id
+                  ) Xóa
+
+          

@@ -30,12 +30,12 @@ module.exports.createPost = async (req, res) => {
     const record = new ProductCategory(req.body);
     await record.save();
 
-    res.flash('success', 'Create new category successful!');
+    req.flash('success', 'Create new category successful!');
     res.redirect(`/${systemConfig.adminPrefix}/products-category`);
 
   } catch (error) {
     console.log('CANNOT CREATE NEW CATEGORY - ERROR:', error);
-    res.flash('error', 'Create new category failed, error occured!');
+    req.flash('error', 'Create new category failed, error occured!');
     res.redirect("back");
   }
 }

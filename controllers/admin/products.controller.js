@@ -90,6 +90,7 @@ module.exports.changeMulti = async (req, res) => {
       await Product.updateMany({ _id: {$in: ids} }, { status: type });
       req.flash('success', `Update position for ${ids.length} products successful !`);
       break;
+
     case "delete-all":  
       await Product.updateMany({ _id: {$in: ids} }, { 
         deleted: true,
@@ -97,6 +98,7 @@ module.exports.changeMulti = async (req, res) => {
       });
       req.flash('success', `Deleted ${ids.length} products.`);
       break;
+
     case "change-position":
       for (const item of ids) {
         const [id, position] = item.split('-');
@@ -104,6 +106,7 @@ module.exports.changeMulti = async (req, res) => {
       }
       req.flash('success', `Update position for ${ids.length} products successful !`);
       break;
+      
     default:
       break;
   } 

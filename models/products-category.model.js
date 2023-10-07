@@ -11,6 +11,7 @@ const productsCategorySchema = new mongoose.Schema({
   },
   thumbnail: String,
   position: Number,
+  status: String,
   slug: { 
     type: String, 
     slug: "title",
@@ -25,6 +26,6 @@ const productsCategorySchema = new mongoose.Schema({
   { timestamps: true }
 )
 
-const ProductsCategory = mongoose.model("productsCategory", productsCategorySchema, "productsCategory");
+const ProductsCategory = mongoose.model("productsCategory", productsCategorySchema, "products-category");
 
 module.exports = ProductsCategory;
