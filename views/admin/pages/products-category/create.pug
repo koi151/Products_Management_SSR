@@ -1,0 +1,95 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+//- include ../../mixins/select-tree.pug
+
+block main
+  h1(class="mb-4") Add new product category
+
+  +alert-error(5000)
+
+  form(
+    action=`/${adminPrefix}/products-category/create`
+    method="POST"
+    enctype="multipart/form-data"
+  )
+    div(class="form-group")
+      label(for="title") Title
+      input(
+        type="text"
+        class="form-control"
+        id="title"
+        name="title"
+        required
+      )
+    div(class="form-group")
+      label(for="parent_id") Parent category
+      select(
+        name="parent_id"
+        id="parent_id"
+        class="form-control"
+      )
+        option(value="") -- Select parent category --
+        //- +select-tree(records)
+        
+    div(class="form-group")
+      label(for="desc") Description
+      textarea(
+        type="text"
+        class="form-control textarea-mce"
+        id="desc"
+        name="description"
+        rows="5"
+        textarea-mce
+      )
+    div(
+      class="form-group"
+      upload-image
+    )
+      label(for="thumbnail") Image
+      input(
+        type="file"
+        class="form-control-file"
+        id="thumbnail"
+        name="thumbnail"
+        accept="image/*"
+        upload-image-input
+      )
+      img(
+        src=""
+        class="image-preview"
+        upload-image-preview
+      )
+    div(class="form-group")
+      label(for="position") Position
+      input(
+        type="number"
+        class="form-control"
+        id="position"
+        name="position"
+        placeholder="Auto increase"
+        min="1"
+      )
+    div(class="form-group form-check form-check-inline")
+      input(
+        type="radio"
+        class="form-check-input"
+        id="statusActive"
+        name="status"
+        value="active"
+        checked
+      )
+      label(for="statusActive" class="form-check-label") Active
+    div(class="form-group form-check form-check-inline")
+      input(
+        type="radio"
+        class="form-check-input"
+        id="statusInActive"
+        name="status"
+        value="inactive"
+      )
+      label(for="statusInActive" class="form-check-label") Inactive
+    div(class="form-group")
+      button(
+        type="submit"
+        class="btn btn-primary"
+      ) Create new

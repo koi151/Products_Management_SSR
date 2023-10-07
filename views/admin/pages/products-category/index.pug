@@ -1,0 +1,15 @@
+extends ../../layouts/default.pug
+
+block main
+  h1(class="mb-4") Products Category 
+
+  .card.mb-3
+    .card-header List
+    .card-body
+      .row
+        .col-8
+        .col-4.text-right
+          a(
+            href=`/${adminPrefix}/products-category/create`
+            class="btn btn-outline-success"
+          ) + Add new
