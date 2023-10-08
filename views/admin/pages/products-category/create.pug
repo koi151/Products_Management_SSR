@@ -1,6 +1,6 @@
 extends ../../layouts/default.pug
 include ../../mixins/alert.pug
-//- include ../../mixins/select-tree.pug
+include ../../mixins/select-tree.pug
 
 block main
   h1(class="mb-4") Add new product category
@@ -24,13 +24,14 @@ block main
       )
     div(class="form-group")
       label(for="parent_id") Parent category
-      select(
-        name="parent_id"
-        id="parent_id"
-        class="form-control"
-      )
-        option(value="") -- Select parent category --
-        //- +select-tree(records)
+        select(
+          name='parent_id'
+          id='parent_id'
+          class='form-control'
+        )
+          option(value="") Select parent category
+          if(records)
+            +select-tree(records)
         
     div(class="form-group")
       label(for="desc") Description

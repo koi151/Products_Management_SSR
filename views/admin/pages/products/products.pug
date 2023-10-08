@@ -23,7 +23,7 @@ block main
         +form-search(keyword)
   
   .card.mb-3
-  .card-header Sắp xếp
+  .card-header Sorting
   .card-body
     .row
       .col-4
@@ -67,7 +67,7 @@ block main
                     name="id"
                     value=product.id
                         )
-                td #{index+1}
+                td #{pagination.limitItems * (pagination.currentPage - 1) + index + 1} 
                 td 
                   img(
                     src = product.thumbnail

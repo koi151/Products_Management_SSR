@@ -1,0 +1,6 @@
+mixin select-tree(records, level = 1)
+  each record in records
+    - const prefix = Array(level + 1).join("-- ")
+    option(value=record.id) #{prefix}#{record.title}
+      if record.children && record.children.length > 0
+        +select-tree(record.children, level + 1)
