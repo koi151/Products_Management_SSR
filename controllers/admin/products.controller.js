@@ -1,8 +1,10 @@
 const Product = require('../../models/products.model');
+const ProductCategory = require('../../models/products-category.model');
 
 const filterStatusHelper = require('../../helpers/filterStatus');
 const searchHelper = require('../../helpers/search');
 const paginationHelper = require('../../helpers/pagination');
+const createTreeHelper = require("../../helpers/createTree");
 
 const systemConfig = require("../../config/system");
 
@@ -126,11 +128,22 @@ module.exports.deleteItem = async (req, res) => {
   res.redirect('back');
 }
 
-// [GET /admin/products/create]
+// [GET] /admin/products/create
 module.exports.create = async (req, res) => {
-  res.render("admin/pages/products/create.pug", {
-    pageTitle: 'Create new product'
-  })
+  try {
+    const category = await ProductCategory.find({ deleted: false });
+    const newCategory = createTreeHelper.tree(category);
+
+    res.render("admin/pages/products/create.pug", {
+      pageTitle: 'Create new product',
+      category: newCategory
+    })
+
+  } catch (error) {
+    console.log('ERROR OCCURRED:', error);
+    req.flash('error', 'Error occured')
+    res.redirect("back");
+  }
 }
 
 // [POST] /admin/products/createPost]
@@ -167,11 +180,17 @@ module.exports.edit = async (req, res) => {
       deleted: false
     })
 
+    const category = await ProductCategory.find({ deleted: false });
+    const newCategory = createTreeHelper.tree(category);
+
     res.render("admin/pages/products/edit.pug", {
       pageTitle: 'Edit product',
-      product: product
+      product: product,
+      category: newCategory
     });
+
   } catch (error) {
+    console.log('ERROR OCCURED:', error);
     req.flash('error', 'Page is not exists, directed to products page');
     res.redirect(`/${systemConfig.adminPrefix}/products`);
   }

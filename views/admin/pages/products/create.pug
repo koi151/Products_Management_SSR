@@ -1,8 +1,11 @@
 extends ../../layouts/default.pug
 include ../../mixins/alert.pug
+include ../../mixins/select-tree.pug
+
 
 block main
   +alert-error(5000)
+  +alert-success(5000)
 
   h1(class="mb-4") Add new product
 
@@ -12,6 +15,7 @@ block main
     enctype="multipart/form-data"
     accept="image/*"
   )
+
     div(class="form-group")
       label(for="title") Title
       input(
@@ -21,6 +25,19 @@ block main
         name="title"
         required
       )
+
+    div(class="form-group")
+      label(for="product_category_id") Parent category
+        select(
+          name='product_category_id'
+          id='product_category_id'
+          class='form-control'
+        )
+          option(value="") Select parent category
+          if(category)
+            +select-tree(category)
+
+
     div(class="form-group")
       label(for="desc") Description
       textarea(
@@ -29,6 +46,7 @@ block main
         name="description"
         rows="5"
       )
+
     div(class="form-group")
       label(for="price") Price
       input(
@@ -39,6 +57,7 @@ block main
         value="0"
         min="0"
       )
+
     div(class="form-group")
       label(for="discount") % Discount
       input(
@@ -49,6 +68,7 @@ block main
         value="0"
         min="0"
       )
+
     div(class="form-group")
       label(for="stock") Quantity
       input(
@@ -59,6 +79,7 @@ block main
         value="0"
         min="0"
       )
+
     div(
       class="form-group"
       upload-image
@@ -76,6 +97,7 @@ block main
         class='image-preview'
         upload-image-preview
       )
+
     div(class="form-group")
       label(for="position") Position
       input(
@@ -86,6 +108,7 @@ block main
         placeholder="Auto increase"
         min="1"
       )
+
     div(class="form-group form-check form-check-inline")
       input(
         type="radio"
@@ -111,4 +134,4 @@ block main
         class="btn btn-primary"
       ) Create new
 
-  //- script(src="/admin/js/product.js")
+  script(src="/admin/js/product.js")

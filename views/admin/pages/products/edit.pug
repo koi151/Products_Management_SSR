@@ -1,5 +1,7 @@
 extends ../../layouts/default.pug
 include ../../mixins/alert.pug
+include ../../mixins/select-tree.pug
+
 
 block main
   +alert-error(5000)
@@ -8,6 +10,7 @@ block main
   h1(class="mb-4") Edit product
 
   form(
+    action=`/${adminPrefix}/products/edit/${product.id}?_method=PATCH`
     method="POST"
     enctype="multipart/form-data"
     accept="image/*"
@@ -22,6 +25,17 @@ block main
         required
         value=product.title
       )
+
+    div(class="form-group")
+      label(for="product_category_id") Parent category
+        select(
+          name='product_category_id'
+          id='product_category_id'
+          class='form-control'
+        )
+          option(value="") Select parent category
+          if(category)
+            +select-tree(category, 1, product.product_category_id)
       
     div(class="form-group")
       label(for="desc") Description
