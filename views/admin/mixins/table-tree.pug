@@ -44,13 +44,14 @@ mixin table-tree(records, level = 1)
         ) Inactive
     td
       a(
-        href=`${prefixAdmin}/products-category/detail/${record.id}`
+        href=`/${adminPrefix}/products-category/detail/${record.id}`
         class="btn btn-secondary btn-sm"
         ) Detail
       a(
-        href=`${prefixAdmin}/products-category/edit/${record.id}`
+        href=`/${adminPrefix}/products-category/edit/${record.id}`
         class="btn btn-warning btn-sm"
-        ) Modify
+        style="margin-left: 5px"
+        ) Edit
       button(
         class="btn btn-danger btn-sm ml-1"
         button-delete

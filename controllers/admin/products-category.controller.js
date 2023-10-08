@@ -9,7 +9,7 @@ module.exports.index = async (req, res) => {
   };
 
   const records = await ProductCategory.find(criterias);
-  const newRecords = createTreeHelper(records);
+  const newRecords = createTreeHelper.tree(records);
 
   res.render("admin/pages/products-category/index.pug", {
     pageTitle: "Products Category",
@@ -24,13 +24,12 @@ module.exports.create = async (req, res) => {
   };
 
   const records = await ProductCategory.find(criterias);
-  const newRecords = createTreeHelper(records);
+  const newRecords = createTreeHelper.tree(records);
 
   res.render('admin/pages/products-category/create.pug', {
     pageTitle: "Create product category",
     records: newRecords
   })
-
 }
 
 // [POST] /admin/products-category/create
@@ -52,6 +51,57 @@ module.exports.createPost = async (req, res) => {
   } catch (error) {
     console.log('CANNOT CREATE NEW CATEGORY - ERROR:', error);
     req.flash('error', 'Create new category failed, error occured!');
+    res.redirect("back");
+  }
+}
+
+// [GET] /admin/products-category/edit/:id
+module.exports.edit = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const data = await ProductCategory.findOne({
+      _id: id, 
+      deleted: false
+    });
+
+    const records = await ProductCategory.find({
+      deleted: false
+    });
+    
+    const newRecords = createTreeHelper.tree(records);
+
+    res.render('admin/pages/products-category/edit.pug', {
+      pageTitle: "Edit product category",
+      data: data,
+      records: newRecords
+    })
+
+  } catch (error) {
+    console.log('ERROR OCCURED:', error);
+    req.flash('error', "Can not load edit page");
+    res.redirect("back")
+  }
+}
+
+// [PATCH] /admin/products-category/edit/:id
+module.exports.editPatch = async (req, res) => {
+  try {
+    const id = req.params.id;
+    req.body.position = parseInt(req.body.position);
+
+    if (req.file && req.file.filename) { 
+      req.body.thumbnail = `/uploads/${req.file.filename}`
+    }
+
+    await ProductCategory.updateOne({ _id: id }, req.body )
+    
+    req.flash('success', "Update product category successful !");
+    res.redirect("back");
+
+  } catch (error) {
+    console.log('ERROR OCCURED:', error);
+    req.flash('error', "Error occured, can not update product category")
     res.redirect("back");
   }
 }

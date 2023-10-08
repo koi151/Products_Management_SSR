@@ -1,16 +1,17 @@
 extends ../../layouts/default.pug
 include ../../mixins/alert.pug
+include ../../mixins/select-tree.pug
 
 block main
+  h1(class="mb-4") Edit product category
+
   +alert-error(5000)
   +alert-success(5000)
 
-  h1(class="mb-4") Edit product
-
   form(
+    action=`/${adminPrefix}/products-category/edit/${data.id}?_method=PATCH`
     method="POST"
     enctype="multipart/form-data"
-    accept="image/*"
   )
     div(class="form-group")
       label(for="title") Title
@@ -19,10 +20,21 @@ block main
         class="form-control"
         id="title"
         name="title"
+        value=data.title
         required
-        value=product.title
       )
-      
+
+    div(class="form-group")
+      label(for="parent_id") Parent category
+        select(
+          name='parent_id'
+          id='parent_id'
+          class='form-control'
+        )
+          option(value="") Select parent category
+          if(records)
+            +select-tree(records, 1, data.parent_id)
+        
     div(class="form-group")
       label(for="desc") Description
       textarea(
@@ -30,38 +42,9 @@ block main
         id="desc"
         name="description"
         rows="5"
-      ) #{product.description}
+        textarea-mce
+      ) #{data.description}
 
-    div(class="form-group")
-      label(for="price") Price
-      input(
-        type="number"
-        class="form-control"
-        id="price"
-        name="price"
-        min="0"
-        value=product.price
-      )
-    div(class="form-group")
-      label(for="discount") % Discount
-      input(
-        type="number"
-        class="form-control"
-        id="discount"
-        name="discountPercentage"
-        min="0"
-        value=product.discountPercentage
-      )
-    div(class="form-group")
-      label(for="stock") Quantity
-      input(
-        type="number"
-        class="form-control"
-        id="stock"
-        name="stock"
-        min="0"
-        value=product.stock
-      )
     div(
       class="form-group"
       upload-image
@@ -72,13 +55,16 @@ block main
         class="form-control-file"
         id="thumbnail"
         name="thumbnail"
+        accept="image/*"
         upload-image-input
       )
+
       img(
-        src=product.thumbnail
-        class='image-preview'
+        src=data.thumbnail
+        class="image-preview"
         upload-image-preview
       )
+
     div(class="form-group")
       label(for="position") Position
       input(
@@ -88,8 +74,9 @@ block main
         name="position"
         placeholder="Auto increase"
         min="1"
-        value=product.position
+        value=data.position
       )
+
     div(class="form-group form-check form-check-inline")
       input(
         type="radio"
@@ -97,7 +84,7 @@ block main
         id="statusActive"
         name="status"
         value="active"
-        checked=(product.status == 'active' ? true : false)
+        checked=(data.status == 'active' ? true : false)
       )
       label(for="statusActive" class="form-check-label") Active
     div(class="form-group form-check form-check-inline")
@@ -107,14 +94,11 @@ block main
         id="statusInActive"
         name="status"
         value="inactive"
-        checked=(product.status == 'inactive' ? true : false)
+        checked=(data.status == 'inactive' ? true : false)
       )
       label(for="statusInActive" class="form-check-label") Inactive
-      
     div(class="form-group")
       button(
         type="submit"
         class="btn btn-primary"
       ) Update
-
-  script(src="/admin/js/product.js")

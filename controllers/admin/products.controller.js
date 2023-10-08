@@ -196,7 +196,7 @@ module.exports.editPatch = async (req, res) => {
   res.redirect(`back`);
 }
 
-// [GET /admin/products/detail/:id]
+// [GET] /admin/products/detail/:id]
 module.exports.detail = async (req, res) => {
   try {
     const id = req.params.id;
