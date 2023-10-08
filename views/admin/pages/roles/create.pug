@@ -1,0 +1,35 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block main
+  h1(class="mb-4") Add new group role
+
+  +alert-success(5000)
+  +alert-error(5000)
+
+  form(
+    action=`/${adminPrefix}/roles/create`
+    method="POST"
+  )
+    div(class="form-group")
+      label(for="title") Title
+      input(
+        type="text"
+        class="form-control"
+        id="title"
+        name="title"
+        required
+      )
+    div(class="form-group")
+      label(for="desc") Description
+      input(
+        type="text"
+        class="form-control"
+        id="desc"
+        name="description"
+      )
+    div(class="form-group")
+      button(
+        type="submit"
+        class="btn btn-primary"
+      ) Create new
