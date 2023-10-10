@@ -77,7 +77,6 @@ module.exports.changeStatus = async (req, res) => {
   await Product.updateOne({ _id:  id}, { status: status});
 
   req.flash('success', 'Update status successful !');
-
   res.redirect('back');
 }
 
