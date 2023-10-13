@@ -93,12 +93,23 @@ module.exports.permissions = async (req, res) => {
   })
 }
 
-// [PATH] /admin/roles/permissions
+// [GET] /admin/detail/:id
+module.exports.detail = async (req, res) => {
+  const id = req.params.id;
+  const data = await Role.findOne({ _id: id });
+
+  res.render("admin/pages/roles/detail.pug", {
+    pageTitle: "Detail Role",
+    data: data
+  })
+}
+
+
+// [PATCH] /admin/roles/permissions
 module.exports.permissionsPatch = async (req, res) => {
   try {
     const id = req.par
     const permissions = JSON.parse(req.body.permissions); 
-    console.log(permissions);
 
     for (const item of permissions) {
       await Role.updateOne(
@@ -115,7 +126,28 @@ module.exports.permissionsPatch = async (req, res) => {
     res.redirect('back')
 
   } catch (error) {
+    console.log('ERROR OCCURED:', error);
     req.flash('error', 'Error occured, can not create new role');
+    res.redirect('back');
+  }
+}
+
+// [DELETE] /admin/roles/delete/:id
+module.exports.deleteItem = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    await Role.updateOne({ _id: id }, {
+      deleted: true,
+      deletedAt: Date()
+    });
+
+    req.flash('success', 'Delete role successful !');
+    res.redirect('back');
+
+  } catch (error) {
+    console.log('ERROR OCCURED WHILE DELETING ROLE:', error);
+    req.flash('error', 'Error occured, can not delete role');
     res.redirect('back');
   }
 }

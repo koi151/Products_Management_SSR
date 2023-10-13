@@ -105,3 +105,61 @@ module.exports.editPatch = async (req, res) => {
     res.redirect("back");
   }
 }
+
+// [GET] /admin/products-category/detail/:id
+module.exports.detail = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const data = await ProductCategory.findOne({ _id: id });
+
+    res.render("admin/pages/products-category/detail.pug", {
+      pageTitle: "Product Category Detail",
+      data: data
+    })
+
+  } catch(error) {
+    console.log('ERROR OCCURED:', error);
+    req.flash("error",  "Error occured, can not get data");
+    res.redirect("back");
+  } 
+}
+
+// [PATCH] /admin/products-category/:status/:id
+module.exports.changeStatus = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const newStatus = req.params.status;
+    await ProductCategory.updateOne(
+      { _id: id  }, 
+      { status: newStatus}
+    )
+
+    req.flash('success', "Update status successful !");
+    res.redirect('back');
+
+  } catch (error) {
+    console.log("Error occured while change status:", error);
+    req.flash("error", "Error occured, can not change product category status");
+    res.redirect("back");
+  }
+}
+
+// [DELETE] /admin/products-category/delete/:id
+module.exports.deleteItem = async (req, res) => {
+  try {
+    const id = req.params.id;
+    
+    await ProductCategory.updateOne({ _id: id }, { 
+      deleted: true,
+      deletedAt: Date() 
+    });
+
+    req.flash('success', 'Product deleted.');
+    res.redirect('back');
+
+  } catch (error) {
+    console.log('Error occurred, delete failed:', error);
+    req.flash('error', 'Error occured, can not delete product');
+    res.redirect('back');
+  }
+}

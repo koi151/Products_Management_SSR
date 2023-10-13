@@ -5,7 +5,7 @@ block main
   +alert-success(5000)
   +alert-error(5000)
 
-  h1(class="mb-4") Decentralization
+  h1(class="mb-4") Permissions
 
   if(records)
     div(data-records=records)
@@ -58,60 +58,60 @@ block main
             td(class="text-center")
               input(type="checkbox")
 
-  //-       //- Product
-  //-       tr
-  //-         td(colspan="4")
-  //-           b Product
-  //-       tr(data-name="products_view")
-  //-         td View
-  //-         each item in records
-  //-           td(class="text-center")
-  //-             input(type="checkbox")
-  //-       tr(data-name="products_create")
-  //-         td Add new
-  //-         each item in records
-  //-           td(class="text-center")
-  //-             input(type="checkbox")
-  //-       tr(data-name="products_edit")
-  //-         td Edit
-  //-         each item in records
-  //-           td(class="text-center")
-  //-             input(type="checkbox")
-  //-       tr(data-name="products_delete")
-  //-         td Delete
-  //-         each item in records
-  //-           td(class="text-center")
-  //-             input(type="checkbox")
+        //- Product
+        tr
+          td(colspan="4")
+            b Product
+        tr(data-name="products_view")
+          td View
+          each item in records
+            td(class="text-center")
+              input(type="checkbox")
+        tr(data-name="products_create")
+          td Add new
+          each item in records
+            td(class="text-center")
+              input(type="checkbox")
+        tr(data-name="products_edit")
+          td Edit
+          each item in records
+            td(class="text-center")
+              input(type="checkbox")
+        tr(data-name="products_delete")
+          td Delete
+          each item in records
+            td(class="text-center")
+              input(type="checkbox")
 
-  //-       //- Group roles
-  //-       tr
-  //-         td(colspan="4")
-  //-           b Group roles
-  //-       tr(data-name="roles_view")
-  //-         td View
-  //-         each item in records
-  //-           td(class="text-center")
-  //-             input(type="checkbox")
-  //-       tr(data-name="roles_create")
-  //-         td Add new
-  //-         each item in records
-  //-           td(class="text-center")
-  //-             input(type="checkbox")
-  //-       tr(data-name="roles_edit")
-  //-         td Edit
-  //-         each item in records
-  //-           td(class="text-center")
-  //-             input(type="checkbox")
-  //-       tr(data-name="roles_delete")
-  //-         td Delete
-  //-         each item in records
-  //-           td(class="text-center")
-  //-             input(type="checkbox")
-  //-       tr(data-name="roles_permissions")
-  //-         td Decentralization
-  //-         each item in records
-  //-           td(class="text-center")
-  //-             input(type="checkbox")
+        //- Group roles
+        tr
+          td(colspan="4")
+            b Group roles
+        tr(data-name="roles_view")
+          td View
+          each item in records
+            td(class="text-center")
+              input(type="checkbox")
+        tr(data-name="roles_create")
+          td Add new
+          each item in records
+            td(class="text-center")
+              input(type="checkbox")
+        tr(data-name="roles_edit")
+          td Edit
+          each item in records
+            td(class="text-center")
+              input(type="checkbox")
+        tr(data-name="roles_delete")
+          td Delete
+          each item in records
+            td(class="text-center")
+              input(type="checkbox")
+        tr(data-name="roles_permissions")
+          td Permissions
+          each item in records
+            td(class="text-center")
+              input(type="checkbox")
 
   form(
     id="form-change-permissions"

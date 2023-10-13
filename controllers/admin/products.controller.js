@@ -117,14 +117,23 @@ module.exports.changeMulti = async (req, res) => {
 
 // [DELETE] /admin/products/delete/:id
 module.exports.deleteItem = async (req, res) => {
-  const id = req.params.id;
-  // await Products.deleteOne({ _id: id }); // PERMANENTLY DELETE
-  await Product.updateOne({ _id: id }, { 
-    deleted: true,
-    deletedAt: Date() 
-  });
-  req.flash('success', 'Product deleted.');
-  res.redirect('back');
+  try {
+    const id = req.params.id;
+
+    // await Products.deleteOne({ _id: id }); // PERMANENTLY DELETE
+    await Product.updateOne({ _id: id }, { 
+      deleted: true,
+      deletedAt: Date() 
+    });
+
+    req.flash('success', 'Product deleted.');
+    res.redirect('back');
+
+  } catch (error) {
+    console.log('Error occurred, delete failed:', error);
+    req.flash('error', 'Error occured, can not delete product');
+    res.redirect('back');
+  }
 }
 
 // [GET] /admin/products/create

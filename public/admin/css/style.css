@@ -104,4 +104,22 @@
 .image-preview[src=""] {
   display: none;
 }
+
+.badge {
+  cursor: pointer;
+}
 /* End Image Preview */
+
+/* Buttons */
+.btn {
+  margin-right: 8px;
+}
+/*End Buttons*/
+
+/* Input - Position */
+.input-position {
+  width: 60px; 
+  border: none; 
+  text-align: center
+}
+/* Input - Position */

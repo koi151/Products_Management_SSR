@@ -11,6 +11,5 @@ module.exports.createPost = async (req, res, next) => {
     return;
   }
 
-  console.log('validate run');
   next();
 }

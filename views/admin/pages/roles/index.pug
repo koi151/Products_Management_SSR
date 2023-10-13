@@ -46,8 +46,19 @@ block main
                     href=`/${adminPrefix}/roles/edit/${role.id}`
                   ) Edit
                   button(
+                    delete-button
+                    data-id=role.id
                     class="btn btn-danger btn-sm ml-1"
                   ) Delete
           else
             tr
               td(colspan="4" class="text-center") No group roles have been created.
+
+  form(
+    id='form-delete-item'
+    method="POST"
+    action=""
+    data-path=`/${adminPrefix}/roles/delete`
+  )
+
+  

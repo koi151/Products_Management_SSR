@@ -34,3 +34,17 @@ block main
 
           tbody
             +table-tree(records)
+
+          form(
+            id='form-change-status'
+            method='POST'
+            action=''
+            data-path=`/${adminPrefix}/products-category/change-status`
+          )
+
+          form(
+            id='form-delete-item'
+            method='POST'
+            action=''
+            data-path=`/${adminPrefix}/products-category/delete`
+          )

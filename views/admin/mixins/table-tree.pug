@@ -21,25 +21,23 @@ mixin table-tree(records, level = 1)
       input(
         type="number"
         value=record.position
-        style="width: 60px"
+        class='input-position'
         min="1"
         name="position"
       )
     td
       if(record.status == "active")
-        a(
-          href="javascript:;"
+        button(
           data-status=record.status
           data-id=record.id
-          button-change-status
+          change-status-button
           class="badge badge-success"
         ) Active
       else
         a(
-          href="javascript:;"
           data-status=record.status
           data-id=record.id
-          button-change-status
+          change-status-button
           class="badge badge-danger"
         ) Inactive
     td
@@ -53,8 +51,9 @@ mixin table-tree(records, level = 1)
         style="margin-left: 5px"
         ) Edit
       button(
+        href=`/${adminPrefix}/products-category/delete`
         class="btn btn-danger btn-sm ml-1"
-        button-delete
+        delete-button
         data-id=record.id
       ) Delete
 

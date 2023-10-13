@@ -1,0 +1,73 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block main
+  h1(class="mb-4") Account List
+
+  +alert-success(4000)
+  +alert-error(4000)
+
+  .card.mb-3
+    .card-header List
+    .card-body
+      .row
+        .col-8
+        .col-4.text-right
+          a(
+            href=`/${adminPrefix}/accounts/create`
+            class="btn btn-outline-success"
+          ) + Add new
+
+
+      table(
+        class="table table-hover table-sm"
+      )
+        thead
+          tr
+            th No
+            th Avatar
+            th Full name
+            th Permissions
+            th Email
+            th Status
+            th Action
+
+        tbody
+          each record, index in records
+            tr
+              td(class='align-items-center') #{index+1}
+              td
+                img(
+                  src=record.avatar
+                  alt=record.fullName
+                  width="100px"
+                  height="auto"
+                )
+              td #{record.fullName}
+              td #{record.role.title}
+              td #{record.email}
+              td
+                if (record.status === "active")
+                  a(
+                    href="javascript:;"
+                    class="badge badge-success"
+                    data-status="active"
+                  ) Active
+                else
+                  a(
+                    href="javascript:;"
+                    class="badge badge-danger"
+                    data-status="inactive"
+                  ) Inactive
+              td
+                a(
+                  class="btn btn-secondary btn-sm"
+                  href=`/${adminPrefix}/accounts/detail/${record.id}`
+                ) Detail
+                a(
+                  class="btn btn-warning btn-sm ml-1"
+                  href=`/${adminPrefix}/accounts/edit/${record.id}`
+                ) Edit
+                button(
+                  class="btn btn-danger btn-sm ml-1"
+                ) Delete
