@@ -122,4 +122,41 @@
   border: none; 
   text-align: center
 }
-/* Input - Position */
+
+/* Input - Login */
+.login-card {
+  margin-top: 20px;
+  width: 28rem; 
+  padding: 60px 0;
+  border: 1px solid #ccc;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-form .input-login {
+  margin-top: 10px;
+  width: 320px;
+}
+
+.login-form .login-submit-btn {
+  margin-top: 20px;
+  width: 100px;
+}
+
+/* Form hightlight */
+.form-title-underline {
+  content: "";
+  height: 2px;
+  color:#007BFF;
+}
+
+/* MARGIN */
+.mt-20 {
+  margin-top: 20px;
+}

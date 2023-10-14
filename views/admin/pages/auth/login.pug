@@ -1,0 +1,50 @@
+extends ../../layouts/auth.pug
+include ../../mixins/alert.pug
+
+block main
+
+  +alert-success(4000)
+  +alert-error(4000)
+
+  .container.my-5
+    .row.justify-content-center
+      .col-8.d-flex.justify-content-center
+        div(
+          class='login-card' 
+        )
+          h1(class="text-center") Log In
+          .form-title-underline
+          form(
+            class='login-form'
+            action=`/${adminPrefix}/auth/login`
+            method="POST"
+          )
+            div(class="form-group mt-20")
+              label(
+                for="email"
+                class="input-login-label"
+              ) Email
+              input(
+                type="email"
+                class="form-control input-login"
+                id="email"
+                name="email"
+                required
+              )
+            div(class="form-group")
+              label(
+                for="password"
+                class="input-login-label"
+              ) Password
+              input(
+                type="password"
+                class="form-control input-login"
+                id="password"
+                name="password"
+                required
+              )
+            div(class="form-group")
+              button(
+                type="submit"
+                class="btn btn-dark btn-block login-submit-btn"
+              ) Login
