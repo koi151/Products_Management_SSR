@@ -113,6 +113,31 @@ block main
             td(class="text-center")
               input(type="checkbox")
 
+        //- Account related permissions
+        tr
+          td(colspan="4")
+            b Accounts
+        tr(data-name="accounts_view")
+          td View
+          each item in records
+            td(class="text-center")
+              input(type="checkbox")
+        tr(data-name="accounts_create")
+          td Add new
+          each item in records
+            td(class="text-center")
+              input(type="checkbox")
+        tr(data-name="accounts_edit")
+          td Edit
+          each item in records
+            td(class="text-center")
+              input(type="checkbox")
+        tr(data-name="accounts_delete")
+          td Delete
+          each item in records
+            td(class="text-center")
+              input(type="checkbox")
+
   form(
     id="form-change-permissions"
     method="POST"

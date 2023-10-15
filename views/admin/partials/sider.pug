@@ -2,14 +2,19 @@
   .inner-menu 
     ul 
       li 
-        a(href=`/${adminPrefix}/dashboard`) Overall 
-      li 
-        a(href=`/${adminPrefix}/products`) Products
-      li 
-        a(href=`/${adminPrefix}/products-category`) Products category
-      li 
-        a(href=`/${adminPrefix}/roles`) Group roles
-      li 
-        a(href=`/${adminPrefix}/roles/permissions`) Permissions
-      li 
-        a(href=`/${adminPrefix}/accounts`) Accounts 
+        a(href=`/${adminPrefix}/dashboard`) Overall
+      if(role.permissions.includes("products_view"))
+        li 
+          a(href=`/${adminPrefix}/products`) Products
+      if(role.permissions.includes("products-category_view"))
+        li 
+          a(href=`/${adminPrefix}/products-category`) Products category
+      if(role.permissions.includes("roles_view"))
+        li 
+          a(href=`/${adminPrefix}/roles`) Group roles
+      if(role.permissions.includes("roles_permissions"))
+        li 
+          a(href=`/${adminPrefix}/roles/permissions`) Permissions
+      if(role.permissions.includes("accounts_view"))
+        li 
+          a(href=`/${adminPrefix}/accounts`) Accounts 

@@ -110,3 +110,32 @@ module.exports.editPatch = async (req, res) => {
     res.redirect('back');
   }
 }
+
+// [GET] /admin/accounts/detail/:id
+module.exports.detail = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const data = await Account.findOne({ 
+      _id: id,
+      deleted: false
+    });
+
+    const role_id = data.role_id; 
+
+    const role = await Role.findOne({
+      _id: role_id,
+      deleted: false
+    })
+    
+    res.render("admin/pages/accounts/detail.pug", {
+      pageTitle: "Account Detail",
+      data: data,
+      role: role
+    })
+
+  } catch (error) {
+    console.log('ERROR OCCURED:', error);
+    req.flash('error', "Error occured, page did not existed");
+    res.redirect('back');
+  }
+}

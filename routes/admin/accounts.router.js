@@ -11,6 +11,7 @@ const uploadCloud  = require("../../middlewares/admin/uploadCloud.middleware");
 router.get("/", controller.index);
 router.get("/create", controller.create);
 router.get("/edit/:id", controller.edit);
+router.get("/detail/:id", controller.detail);
 
 router.post(
   '/create',

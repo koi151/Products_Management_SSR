@@ -1,0 +1,101 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block main
+  h1(class="mb-4") Account detail:
+
+  +alert-success(4000)
+  +alert-error(4000)
+
+  form(
+		enctype="multipart/form-data"
+  )
+    div(class="form-group")
+      label(for="fullName") Full name 
+      input(
+        type="text"
+        class="form-control"
+        id="fullName"
+        name="fullName"
+        required
+        value=data.fullName
+      )
+    div(class="form-group")
+      label(for="email") Email
+      input(
+        type="email"
+        class="form-control"
+        id="email"
+        name="email"
+        required
+        value=data.email
+      )
+    div(class="form-group")
+      label(for="password") Password
+      input(
+        type="password"
+        class="form-control"
+        id="password"
+        name="password"
+        required
+      )
+    div(class="form-group")
+      label(for="phone") Phone number
+      input(
+        type="text"
+        class="form-control"
+        id="phone"
+        name="phone"
+        value=data.phone
+      )
+    div(
+      class="form-group"
+      upload-image
+    )
+      label(for="avatar") Avatar
+      input(
+        type="file"
+        class="form-control-file"
+        id="avatar"
+        name="avatar"
+        accept="image/*"
+        upload-image-input
+      )
+      img(
+        src=data.avatar
+        class="image-preview"
+        upload-image-preview
+      )
+
+    div(class="form-group")
+      label(for="role_id") Permissions
+      select(
+        name="role_id" 
+        id="role_id" 
+        class="form-control"
+      )
+        option(
+          value=role.id
+          selected=true
+        ) #{role.title}
+
+    div(class="form-group form-check form-check-inline")
+      input(
+        type="radio"
+        class="form-check-input"
+        id="statusActive"
+        name="status"
+        value="active"
+        checked=(data.status == "active" ? true : false)
+      )
+      label(for="statusActive" class="form-check-label") Active
+    div(class="form-group form-check form-check-inline")
+      input(
+        type="radio"
+        class="form-check-input"
+        id="statusInActive"
+        name="status"
+        value="inactive"
+        checked=(data.status == "inactive" ? true : false)
+      )
+      label(for="statusInActive" class="form-check-label") Inactive

@@ -2,7 +2,30 @@ extends ../../layouts/default.pug
 include ../../mixins/alert.pug
 
 block main 
-  h1 Dashboard Page
 
   +alert-success(4000)
   +alert-error(4000)
+
+  strong(
+    class='mt-20'
+  ) Current user:
+  i(
+    style='margin-left: 10px'
+  ) #{user.fullName}
+  br
+
+  if role.permissions.length > 0
+    strong(
+      style='margin-top: 10px'
+    ) Current roles:
+    ul(
+      class='role-list'
+    )
+      each permission in role.permissions
+        li #{permission}
+  else 
+    div(class='mt-20')
+      h4 Account does not have any permission in admin page 
+      i Contact 
+      strong admin
+      i  to add permissions to your account
