@@ -136,7 +136,6 @@ module.exports.changeStatus = async (req, res) => {
 
     req.flash('success', "Update status successful !");
     res.redirect('back');
-
   } catch (error) {
     console.log("Error occured while change status:", error);
     req.flash("error", "Error occured, can not change product category status");

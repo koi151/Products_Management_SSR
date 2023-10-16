@@ -1,61 +1,59 @@
 mixin table-tree(records, level = 1)
   each record, index in records
     - const prefix = Array(level + 1).join("-- ")
-    tr 
-    td
-      input(
-        type="checkbox"
-        name="id"
-        value=record.id
-      )
-    td #{record.index + 1}
-    td
-      img(
-        src=record.thumbnail
-        alt=record.title
-        width="100px"
-        height="auto"
-      )
-    td #{prefix}#{record.title}
-    td
-      input(
-        type="number"
-        value=record.position
-        class='input-position'
-        min="1"
-        name="position"
-      )
-    td
-      if(record.status == "active")
-        button(
-          data-status=record.status
-          data-id=record.id
-          change-status-button
-          class="badge badge-success"
-        ) Active
-      else
-        a(
-          data-status=record.status
-          data-id=record.id
-          change-status-button
-          class="badge badge-danger"
-        ) Inactive
-    td
-      a(
-        href=`/${adminPrefix}/products-category/detail/${record.id}`
-        class="btn btn-secondary btn-sm"
-        ) Detail
-      a(
-        href=`/${adminPrefix}/products-category/edit/${record.id}`
-        class="btn btn-warning btn-sm"
-        style="margin-left: 5px"
-        ) Edit
-      button(
-        href=`/${adminPrefix}/products-category/delete`
-        class="btn btn-danger btn-sm ml-1"
-        delete-button
-        data-id=record.id
-      ) Delete
+    tr(style="text-align: center; vertical-align: center")
+      td(class="align-middle text-center") #{record.index}
+      td(class="align-middle text-center")
+        img(
+          src=record.thumbnail
+          alt=record.title
+          width="100px"
+          height="auto"
+        )
+      td(class="align-middle text-center") #{prefix}#{record.title}
+      td(class="align-middle text-center")
+        input(
+          type="number"
+          value=record.position
+          class='input-position'
+          min="1"
+          name="position"
+          disabled
+        )
+      td(class="align-middle text-center")
+        if(record.status == "active")
+          button(
+            data-status=record.status
+            data-id=record.id
+            change-status-button
+            class="badge badge-success"
+          ) Active
+        else
+          a(
+            data-status=record.status
+            data-id=record.id
+            change-status-button
+            class="badge badge-danger"
+          ) Inactive
+      td(class="align-middle text-center")
+        if(role.permissions.includes("products-category_view"))
+          a(
+            href=`/${adminPrefix}/products-category/detail/${record.id}`
+            class="btn btn-secondary btn-sm"
+            ) Detail
+        if(role.permissions.includes("products-category_edit"))
+          a(
+            href=`/${adminPrefix}/products-category/edit/${record.id}`
+            class="btn btn-warning btn-sm"
+            style="margin-left: 5px"
+            ) Edit
+        if(role.permissions.includes("products-category_delete"))
+          button(
+            href=`/${adminPrefix}/products-category/delete`
+            class="btn btn-danger btn-sm ml-1"
+            delete-button
+            data-id=record.id
+          ) Delete
 
     if record.children && record.children.length > 0
       +table-tree(record.children, level + 1)

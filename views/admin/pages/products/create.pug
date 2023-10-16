@@ -4,134 +4,141 @@ include ../../mixins/select-tree.pug
 
 
 block main
-  +alert-error(5000)
-  +alert-success(5000)
+  if(role.permissions.includes("products_create"))
+    +alert-error(5000)
+    +alert-success(5000)
 
-  h1(class="mb-4") Add new product
+    h1(class="mb-4") Add new product
 
-  form(
-    action=`/${adminPrefix}/products/create`
-    method="POST"
-    enctype="multipart/form-data"
-    accept="image/*"
-  )
-
-    div(class="form-group")
-      label(for="title") Title
-      input(
-        type="text"
-        class="form-control"
-        id="title"
-        name="title"
-        required
-      )
-
-    div(class="form-group")
-      label(for="product_category_id") Parent category
-        select(
-          name='product_category_id'
-          id='product_category_id'
-          class='form-control'
-        )
-          option(value="") Select parent category
-          if(category)
-            +select-tree(category)
-
-
-    div(class="form-group")
-      label(for="desc") Description
-      textarea(
-        class="form-control textarea-mce"
-        id="desc"
-        name="description"
-        rows="5"
-      )
-
-    div(class="form-group")
-      label(for="price") Price
-      input(
-        type="number"
-        class="form-control"
-        id="price"
-        name="price"
-        value="0"
-        min="0"
-      )
-
-    div(class="form-group")
-      label(for="discount") % Discount
-      input(
-        type="number"
-        class="form-control"
-        id="discount"
-        name="discountPercentage"
-        value="0"
-        min="0"
-      )
-
-    div(class="form-group")
-      label(for="stock") Quantity
-      input(
-        type="number"
-        class="form-control"
-        id="stock"
-        name="stock"
-        value="0"
-        min="0"
-      )
-
-    div(
-      class="form-group"
-      upload-image
+    form(
+      action=`/${adminPrefix}/products/create`
+      method="POST"
+      enctype="multipart/form-data"
+      accept="image/*"
     )
-      label(for="thumbnail") Image
-      input(
-        type="file"
-        class="form-control-file"
-        id="thumbnail"
-        name="thumbnail"
-        upload-image-input
-      )
-      img(
-        src=""
-        class='image-preview'
-        upload-image-preview
-      )
 
-    div(class="form-group")
-      label(for="position") Position
-      input(
-        type="number"
-        class="form-control"
-        id="position"
-        name="position"
-        placeholder="Auto increase"
-        min="1"
-      )
+      div(class="form-group")
+        label(for="title") Title
+        input(
+          type="text"
+          class="form-control"
+          id="title"
+          name="title"
+          required
+        )
 
-    div(class="form-group form-check form-check-inline")
-      input(
-        type="radio"
-        class="form-check-input"
-        id="statusActive"
-        name="status"
-        value="active"
-        checked
+      div(class="form-group")
+        label(for="product_category_id") Parent category
+          select(
+            name='product_category_id'
+            id='product_category_id'
+            class='form-control'
+          )
+            option(value="") Select parent category
+            if(category)
+              +select-tree(category)
+
+
+      div(class="form-group")
+        label(for="desc") Description
+        textarea(
+          class="form-control textarea-mce"
+          id="desc"
+          name="description"
+          rows="5"
+        )
+
+      div(class="form-group")
+        label(for="price") Price
+        input(
+          type="number"
+          class="form-control"
+          id="price"
+          name="price"
+          value="0"
+          min="0"
+        )
+
+      div(class="form-group")
+        label(for="discount") % Discount
+        input(
+          type="number"
+          class="form-control"
+          id="discount"
+          name="discountPercentage"
+          value="0"
+          min="0"
+        )
+
+      div(class="form-group")
+        label(for="stock") Quantity
+        input(
+          type="number"
+          class="form-control"
+          id="stock"
+          name="stock"
+          value="0"
+          min="0"
+        )
+
+      div(
+        class="form-group"
+        upload-image
       )
-      label(for="statusActive" class="form-check-label") Active
-    div(class="form-group form-check form-check-inline")
-      input(
-        type="radio"
-        class="form-check-input"
-        id="statusInActive"
-        name="status"
-        value="inactive"
-      )
-      label(for="statusInActive" class="form-check-label") Inactive
-    div(class="form-group")
-      button(
-        type="submit"
-        class="btn btn-primary"
-      ) Create new
+        label(for="thumbnail") Image
+        input(
+          type="file"
+          class="form-control-file"
+          id="thumbnail"
+          name="thumbnail"
+          upload-image-input
+        )
+        img(
+          src=""
+          class='image-preview'
+          upload-image-preview
+        )
+
+      div(class="form-group")
+        label(for="position") Position
+        input(
+          type="number"
+          class="form-control"
+          id="position"
+          name="position"
+          placeholder="Auto increase"
+          min="1"
+        )
+
+      div(class="form-group form-check form-check-inline")
+        input(
+          type="radio"
+          class="form-check-input"
+          id="statusActive"
+          name="status"
+          value="active"
+          checked
+        )
+        label(for="statusActive" class="form-check-label") Active
+      div(class="form-group form-check form-check-inline")
+        input(
+          type="radio"
+          class="form-check-input"
+          id="statusInActive"
+          name="status"
+          value="inactive"
+        )
+        label(for="statusInActive" class="form-check-label") Inactive
+      div(class="form-group")
+        button(
+          type="submit"
+          class="btn btn-primary"
+        ) Create new
+  else 
+    div(class='mt-20')
+      h4 Account does not have permission to create new product
+      i Contact 
+      strong admin
+      i  to add permissions to your account
 
   script(src="/admin/js/product.js")

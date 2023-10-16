@@ -21,10 +21,11 @@ module.exports.authRequire = async (req, res, next) => {
   }
 
   // local variables definition 
-  res.locals.user = user;
-  res.locals.role = await Role.findOne({
+  const role = await Role.findOne({
     _id: user.role_id
   }).select("title permissions")
 
+  res.locals.user = user;
+  res.locals.role = role;
   next();
 }

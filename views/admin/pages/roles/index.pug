@@ -3,62 +3,70 @@ extends ../../layouts/default.pug
 include ../../mixins/alert.pug
 
 block main
-  h1(class="mb-4") Group roles
+  if(role.permissions.includes("roles_view"))
+    h1(class="mb-4") Group roles
 
-  +alert-success(5000)
-  +alert-error(5000)
+    +alert-success(5000)
+    +alert-error(5000)
 
-  .card.mb-3
-    .card-header List
-    .card-body
-      .row
-        .col-8
-        .col-4.text-right
-          a(
-            href=`/${adminPrefix}/roles/create`
-            class="btn btn-outline-success"
-          ) + Add new
+    .card.mb-3
+      .card-header List
+      .card-body
+        .row
+          .col-8
+          .col-4.text-right
+            if(role.permissions.includes("roles_create"))
+              a(
+                href=`/${adminPrefix}/roles/create`
+                class="btn btn-outline-success mb-20"
+              ) + Add new
 
-      table(
-        class="table table-hover table-sm"
-      )
-        thead
-          tr
-            th Index
-            th Group roles
-            th Short description
-            th Action
-
-        tbody
-          if(roles.length > 0)
-            each role, index in roles
-              tr
-                td #{index + 1}
-                td #{role.title}
-                td #{role.description}
-                td
-                  a(
-                    class="btn btn-secondary btn-sm"
-                    href=`/${adminPrefix}/roles/detail/${role.id}`
-                  ) Detail
-                  a(
-                    class="btn btn-warning btn-sm ml-1"
-                    href=`/${adminPrefix}/roles/edit/${role.id}`
-                  ) Edit
-                  button(
-                    delete-button
-                    data-id=role.id
-                    class="btn btn-danger btn-sm ml-1"
-                  ) Delete
-          else
+        table(
+          class="table table-hover table-sm"
+        )
+          thead
             tr
-              td(colspan="4" class="text-center") No group roles have been created.
+              th Index
+              th Group roles
+              th Short description
+              th Action
 
-  form(
-    id='form-delete-item'
-    method="POST"
-    action=""
-    data-path=`/${adminPrefix}/roles/delete`
-  )
-
-  
+          tbody
+            if(allRoles.length > 0)
+              each singleRole, index in allRoles
+                tr
+                  td #{index + 1}
+                  td #{singleRole.title}
+                  td #{singleRole.description}
+                  td
+                    if(role.permissions.includes("roles_view"))
+                      a(
+                        class="btn btn-secondary btn-sm"
+                        href=`/${adminPrefix}/roles/detail/${role.id}`
+                      ) Detail
+                    if(role.permissions.includes("roles_edit"))
+                      a(
+                        class="btn btn-warning btn-sm ml-1"
+                        href=`/${adminPrefix}/roles/edit/${role.id}`
+                      ) Edit
+                    if(role.permissions.includes("roles_delete"))
+                      button(
+                        delete-button
+                        data-id=role.id
+                        class="btn btn-danger btn-sm ml-1"
+                      ) Delete
+            else
+              tr
+                td(colspan="4" class="text-center") No group roles have been created.
+        form(
+          id='form-delete-item'
+          method="POST"
+          action=""
+          data-path=`/${adminPrefix}/roles/delete`
+        )
+  else 
+    div(class='mt-20')
+      h4 Account does not have permission to view roles information
+      i Contact 
+      strong admin
+      i  to add permissions to your account

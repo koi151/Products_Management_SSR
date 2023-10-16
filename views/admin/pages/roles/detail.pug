@@ -2,21 +2,28 @@ extends ../../layouts/default.pug
 include ../../mixins/alert.pug
 
 block main
-  +alert-success(5000)
-  +alert-error(5000)
+  if(role.permissions.includes("roles_view"))
+    +alert-success(5000)
+    +alert-error(5000)
 
-  if (data.title)
-    h1(class="mb-4") #{data.title}
-  hr
+    if (data.title)
+      h1(class="mb-4") #{data.title}
+    hr
 
-  if (data.description)
-    div(class="mb-4")
-      i " #{data.description} "
-  
-  if (data.createdAt)
-    div(class="mb-4")
-      strong Create at: #{data.createdAt}
+    if (data.description)
+      div(class="mb-4")
+        i " #{data.description} "
+    
+    if (data.createdAt)
+      div(class="mb-4")
+        strong Create at: #{data.createdAt}
 
-  if (data.updatedAt)
-    div(class="mb-4")
-      strong Latest update: #{data.updatedAt}
+    if (data.updatedAt)
+      div(class="mb-4")
+        strong Latest update: #{data.updatedAt}
+  else 
+    div(class='mt-20')
+      h4 Account does not have permission to create view roles information
+      i Contact 
+      strong admin
+      i  to add permissions to your account

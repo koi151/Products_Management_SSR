@@ -1,36 +1,43 @@
 extends ../../layouts/default.pug
 
 block main
-  if (product.title)
-    h1(class="mb-4") #{product.title}
-  hr
+  if(role.permissions.includes("products_view"))
+    if (product.title)
+      h1(class="mb-4") #{product.title}
+    hr
 
-  if (product.price)
-    div(class="mb-4") Price: <b>#{product.price}$</b>
+    if (product.price)
+      div(class="mb-4") Price: <b>#{product.price}$</b>
 
-  if (product.discountPercentage)
-    div(class="mb-4") Discount: <b>#{product.discountPercentage}%</b>
+    if (product.discountPercentage)
+      div(class="mb-4") Discount: <b>#{product.discountPercentage}%</b>
 
-  if (product.stock)
-    div(class="mb-4") Stock: <b>#{product.stock}</b>
+    if (product.stock)
+      div(class="mb-4") Stock: <b>#{product.stock}</b>
 
-  if (product.thumbnail)
-    div(class="mb-4")
-      img(
-        src=product.thumbnail
-        style="width: 100px"
-      )
+    if (product.thumbnail)
+      div(class="mb-4")
+        img(
+          src=product.thumbnail
+          style="width: 100px"
+        )
 
-  if (product.status)
-    div(class="mb-4")
-      span Status:
-      if (product.status === "active")
-        span(class="badge badge-success") Active
-      else
-        span(class="badge badge-danger") Inactive
+    if (product.status)
+      div(class="mb-4")
+        span Status:
+        if (product.status === "active")
+          span(class="badge badge-success") Active
+        else
+          span(class="badge badge-danger") Inactive
 
-  if (product.position)
-    div(class="mb-4") Position: <b>#{product.position}</b>
+    if (product.position)
+      div(class="mb-4") Position: <b>#{product.position}</b>
 
-  if (product.description)
-    div(class="mb-4") !{product.description}
+    if (product.description)
+      div(class="mb-4") !{product.description}
+  else 
+    div(class='mt-20')
+      h4 Account does not have permission to view products
+      i Contact 
+      strong admin
+      i  to add permissions to your account

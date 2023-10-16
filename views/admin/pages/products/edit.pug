@@ -4,131 +4,138 @@ include ../../mixins/select-tree.pug
 
 
 block main
-  +alert-error(5000)
-  +alert-success(5000)
+  if(role.permissions.includes("products_edit"))
+    +alert-error(5000)
+    +alert-success(5000)
 
-  h1(class="mb-4") Edit product
+    h1(class="mb-4") Edit product
 
-  form(
-    action=`/${adminPrefix}/products/edit/${product.id}?_method=PATCH`
-    method="POST"
-    enctype="multipart/form-data"
-    accept="image/*"
-  )
-    div(class="form-group")
-      label(for="title") Title
-      input(
-        type="text"
-        class="form-control"
-        id="title"
-        name="title"
-        required
-        value=product.title
-      )
-
-    div(class="form-group")
-      label(for="product_category_id") Parent category
-        select(
-          name='product_category_id'
-          id='product_category_id'
-          class='form-control'
-        )
-          option(value="") Select parent category
-          if(category)
-            +select-tree(category, 1, product.product_category_id)
-      
-    div(class="form-group")
-      label(for="desc") Description
-      textarea(
-        class="form-control textarea-mce"
-        id="desc"
-        name="description"
-        rows="5"
-      ) #{product.description}
-
-    div(class="form-group")
-      label(for="price") Price
-      input(
-        type="number"
-        class="form-control"
-        id="price"
-        name="price"
-        min="0"
-        value=product.price
-      )
-    div(class="form-group")
-      label(for="discount") % Discount
-      input(
-        type="number"
-        class="form-control"
-        id="discount"
-        name="discountPercentage"
-        min="0"
-        value=product.discountPercentage
-      )
-    div(class="form-group")
-      label(for="stock") Quantity
-      input(
-        type="number"
-        class="form-control"
-        id="stock"
-        name="stock"
-        min="0"
-        value=product.stock
-      )
-    div(
-      class="form-group"
-      upload-image
+    form(
+      action=`/${adminPrefix}/products/edit/${product.id}?_method=PATCH`
+      method="POST"
+      enctype="multipart/form-data"
+      accept="image/*"
     )
-      label(for="thumbnail") Image
-      input(
-        type="file"
-        class="form-control-file"
-        id="thumbnail"
-        name="thumbnail"
-        upload-image-input
+      div(class="form-group")
+        label(for="title") Title
+        input(
+          type="text"
+          class="form-control"
+          id="title"
+          name="title"
+          required
+          value=product.title
+        )
+
+      div(class="form-group")
+        label(for="product_category_id") Parent category
+          select(
+            name='product_category_id'
+            id='product_category_id'
+            class='form-control'
+          )
+            option(value="") Select parent category
+            if(category)
+              +select-tree(category, 1, product.product_category_id)
+        
+      div(class="form-group")
+        label(for="desc") Description
+        textarea(
+          class="form-control textarea-mce"
+          id="desc"
+          name="description"
+          rows="5"
+        ) #{product.description}
+
+      div(class="form-group")
+        label(for="price") Price
+        input(
+          type="number"
+          class="form-control"
+          id="price"
+          name="price"
+          min="0"
+          value=product.price
+        )
+      div(class="form-group")
+        label(for="discount") % Discount
+        input(
+          type="number"
+          class="form-control"
+          id="discount"
+          name="discountPercentage"
+          min="0"
+          value=product.discountPercentage
+        )
+      div(class="form-group")
+        label(for="stock") Quantity
+        input(
+          type="number"
+          class="form-control"
+          id="stock"
+          name="stock"
+          min="0"
+          value=product.stock
+        )
+      div(
+        class="form-group"
+        upload-image
       )
-      img(
-        src=product.thumbnail
-        class='image-preview'
-        upload-image-preview
-      )
-    div(class="form-group")
-      label(for="position") Position
-      input(
-        type="number"
-        class="form-control"
-        id="position"
-        name="position"
-        placeholder="Auto increase"
-        min="1"
-        value=product.position
-      )
-    div(class="form-group form-check form-check-inline")
-      input(
-        type="radio"
-        class="form-check-input"
-        id="statusActive"
-        name="status"
-        value="active"
-        checked=(product.status == 'active' ? true : false)
-      )
-      label(for="statusActive" class="form-check-label") Active
-    div(class="form-group form-check form-check-inline")
-      input(
-        type="radio"
-        class="form-check-input"
-        id="statusInActive"
-        name="status"
-        value="inactive"
-        checked=(product.status == 'inactive' ? true : false)
-      )
-      label(for="statusInActive" class="form-check-label") Inactive
-      
-    div(class="form-group")
-      button(
-        type="submit"
-        class="btn btn-primary"
-      ) Update
+        label(for="thumbnail") Image
+        input(
+          type="file"
+          class="form-control-file"
+          id="thumbnail"
+          name="thumbnail"
+          upload-image-input
+        )
+        img(
+          src=product.thumbnail
+          class='image-preview'
+          upload-image-preview
+        )
+      div(class="form-group")
+        label(for="position") Position
+        input(
+          type="number"
+          class="form-control"
+          id="position"
+          name="position"
+          placeholder="Auto increase"
+          min="1"
+          value=product.position
+        )
+      div(class="form-group form-check form-check-inline")
+        input(
+          type="radio"
+          class="form-check-input"
+          id="statusActive"
+          name="status"
+          value="active"
+          checked=(product.status == 'active' ? true : false)
+        )
+        label(for="statusActive" class="form-check-label") Active
+      div(class="form-group form-check form-check-inline")
+        input(
+          type="radio"
+          class="form-check-input"
+          id="statusInActive"
+          name="status"
+          value="inactive"
+          checked=(product.status == 'inactive' ? true : false)
+        )
+        label(for="statusInActive" class="form-check-label") Inactive
+        
+      div(class="form-group")
+        button(
+          type="submit"
+          class="btn btn-primary"
+        ) Update
+  else 
+    div(class='mt-20')
+      h4 Account does not have permission to edit product
+      i Contact 
+      strong admin
+      i  to add permissions to your account
 
   script(src="/admin/js/product.js")

@@ -2,102 +2,109 @@ extends ../../layouts/default.pug
 include ../../mixins/alert.pug
 
 block main
-  h1(class="mb-4") Add new account
+  if(role.permissions.includes("accounts_view"))
+    h1(class="mb-4") Add new account
 
-  +alert-success(4000)
-  +alert-error(4000)
+    +alert-success(4000)
+    +alert-error(4000)
 
-  form(
-    action=`/${adminPrefix}/accounts/create`
-    method="POST"
-		enctype="multipart/form-data"
-  )
-    div(class="form-group")
-      label(for="fullName") Full name *
-      input(
-        type="text"
-        class="form-control"
-        id="fullName"
-        name="fullName"
-        required
-      )
-    div(class="form-group")
-      label(for="email") Email *
-      input(
-        type="email"
-        class="form-control"
-        id="email"
-        name="email"
-        required
-      )
-    div(class="form-group")
-      label(for="password") Password *
-      input(
-        type="password"
-        class="form-control"
-        id="password"
-        name="password"
-        required
-      )
-    div(class="form-group")
-      label(for="phone") Phone number
-      input(
-        type="text"
-        class="form-control"
-        id="phone"
-        name="phone"
-      )
-    div(
-      class="form-group"
-      upload-image
+    form(
+      action=`/${adminPrefix}/accounts/create`
+      method="POST"
+      enctype="multipart/form-data"
     )
-      label(for="avatar") Avatar
-      input(
-        type="file"
-        class="form-control-file"
-        id="avatar"
-        name="avatar"
-        accept="image/*"
-        upload-image-input
+      div(class="form-group")
+        label(for="fullName") Full name *
+        input(
+          type="text"
+          class="form-control"
+          id="fullName"
+          name="fullName"
+          required
+        )
+      div(class="form-group")
+        label(for="email") Email *
+        input(
+          type="email"
+          class="form-control"
+          id="email"
+          name="email"
+          required
+        )
+      div(class="form-group")
+        label(for="password") Password *
+        input(
+          type="password"
+          class="form-control"
+          id="password"
+          name="password"
+          required
+        )
+      div(class="form-group")
+        label(for="phone") Phone number
+        input(
+          type="text"
+          class="form-control"
+          id="phone"
+          name="phone"
+        )
+      div(
+        class="form-group"
+        upload-image
       )
-      img(
-        src=""
-        class="image-preview"
-        upload-image-preview
-      )
+        label(for="avatar") Avatar
+        input(
+          type="file"
+          class="form-control-file"
+          id="avatar"
+          name="avatar"
+          accept="image/*"
+          upload-image-input
+        )
+        img(
+          src=""
+          class="image-preview"
+          upload-image-preview
+        )
 
-    div(class="form-group")
-      label(for="role_id") Permissions
-      select(
-        name="role_id" 
-        id="role_id" 
-        class="form-control"
-      )
-        option(disabled) -- Select --
-        each role in roles
-          option(value=role.id) #{role.title}
+      div(class="form-group")
+        label(for="role_id") Permissions
+        select(
+          name="role_id" 
+          id="role_id" 
+          class="form-control"
+        )
+          option(disabled) -- Select --
+          each role in roles
+            option(value=role.id) #{role.title}
 
-    div(class="form-group form-check form-check-inline")
-      input(
-        type="radio"
-        class="form-check-input"
-        id="statusActive"
-        name="status"
-        value="active"
-        checked
-      )
-      label(for="statusActive" class="form-check-label") Active
-    div(class="form-group form-check form-check-inline")
-      input(
-        type="radio"
-        class="form-check-input"
-        id="statusInActive"
-        name="status"
-        value="inactive"
-      )
-      label(for="statusInActive" class="form-check-label") Inactive
-    div(class="form-group")
-      button(
-        type="submit"
-        class="btn btn-primary"
-      ) Create new
+      div(class="form-group form-check form-check-inline")
+        input(
+          type="radio"
+          class="form-check-input"
+          id="statusActive"
+          name="status"
+          value="active"
+          checked
+        )
+        label(for="statusActive" class="form-check-label") Active
+      div(class="form-group form-check form-check-inline")
+        input(
+          type="radio"
+          class="form-check-input"
+          id="statusInActive"
+          name="status"
+          value="inactive"
+        )
+        label(for="statusInActive" class="form-check-label") Inactive
+      div(class="form-group")
+        button(
+          type="submit"
+          class="btn btn-primary"
+        ) Create new
+  else 
+    div(class='mt-20')
+      h4 Account does not have permission to view roles information
+      i Contact 
+      strong admin
+      i  to add permissions to your account

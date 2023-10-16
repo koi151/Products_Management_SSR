@@ -72,14 +72,14 @@ module.exports.edit = async (req, res) => {
       deleted: false 
     });
 
-    const roles = await Role.find({ 
+    const allRoles = await Role.find({ 
       deleted: false 
     });
     
     res.render("admin/pages/accounts/edit.pug", {
       pageTitle: "Edit Account",
       data: data,
-      roles: roles
+      allRoles: allRoles
     })
 
   } catch (error) {
@@ -92,17 +92,20 @@ module.exports.edit = async (req, res) => {
 // [PATCH] /admin/accounts/edit/:id
 module.exports.editPatch = async (req, res) => {
   try {
-    const id = req.params.id;
     if(req.body.password) {
       req.body.password = md5(req.body.password);
     } else {
       delete req.body.password;
     }
 
-    await Account.updateOne({ _id: id }, req.body);
-    
+    if (req.file && req.file.filename) { 
+      req.body.thumbnail = `/uploads/${req.file.filename}`
+    }
+
+    await Account.updateOne({ _id: req.params.id }, req.body);
+
     req.flash('success', 'Account has been updated successfully !');
-    res.redirect(`/${systemConfig.adminPrefix}/accounts`);
+    res.redirect('back');
 
   } catch (error) {
     console.log('ERROR OCCURED:', error);

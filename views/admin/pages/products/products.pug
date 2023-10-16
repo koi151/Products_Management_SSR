@@ -8,131 +8,143 @@ include ../../mixins/sort.pug
 include ../../mixins/alert.pug
 
 block main 
-  +alert-success(5000)
-  +alert-error(5000)
+  if(role.permissions.includes("products_view"))
+    +alert-success(5000)
+    +alert-error(5000)
 
-  h1(class="mb-4") Products List
+    h1(class="mb-4") Products List
 
-  .card.mb-3
-  .card-header Filtering and Searching
-  .card-body
-    .row 
-      .col-6
-        +filter-status(filterStatus)
-      .col-6
-        +form-search(keyword)
-  
-  .card.mb-3
-  .card-header Sorting
-  .card-body
-    .row
-      .col-4
-        +sort()
-
-  .card.mb-3
-    .card-header List 
-    .card-body 
+    .card.mb-3
+    .card-header Filtering and Searching
+    .card-body
       .row 
-        .col-8 
-          +change-multi(`/${adminPrefix}/products/change-multi?_method=PATCH`)
+        .col-6
+          +filter-status(filterStatus)
+        .col-6
+          +form-search(keyword)
+    
+    .card.mb-3
+    .card-header Sorting
+    .card-body
+      .row
         .col-4
-          a(
-            href=`/${adminPrefix}/products/create`
-            class='btn btn-outline-success'
-          ) + Add new
-          
-      table(
-        class='table table-hover table-sm'
-        checkbox-multi
-      )
-        thead 
-          tr 
-            th
-              input(type='checkbox' name='checkall')
-            th ID
-            th Image 
-            th Title
-            th Price
-            th Position
-            th Status
-            th Action
-        
-        tbody 
-          if (products.length > 0)
-            each product, index in products
-              tr
-                td
-                  input(
-                    type="checkbox"
-                    name="id"
-                    value=product.id
-                  )
-                td #{pagination.limitItems * (pagination.currentPage - 1) + index + 1} 
-                td 
-                  img(
-                    src = product.thumbnail
-                    alt = product.title
-                    width="100px"
-                    heigh='auto'
-                  )
-                td #{product.title}
-                td $#{product.price}
-                td 
-                  input(
-                    class='input-position'
-                    type='number'
-                    value=product.position 
-                    min='1'
-                    name="position"
-                  )
-                td
-                  if (product.status == 'active') 
-                    button(
-                      class="badge badge-success"
-                      change-status-button 
-                      data-status=product.status 
-                      data-id=product.id 
-                    ) Active
-                  else 
-                    button(
-                      class="badge badge-danger"
-                      change-status-button
-                      data-status=product.status 
-                      data-id=product.id
-                    ) Inactive
-                td
-                  a(
-                    href=`/${adminPrefix}/products/detail/${product.id}`
-                    class='btn btn-secondary btn-sm'
-                  ) Detail 
-                  a(
-                    href=`/${adminPrefix}/products/edit/${product.id}`
-                    class='btn btn-warning btn-sm'
-                    ) Edit 
-                  button(
-                    delete-button
-                    data-id=product.id
-                    class='btn btn-danger btn-sm ml-1'
-                  ) Delete 
-          else 
+          +sort()
+
+    .card.mb-3
+      .card-header List 
+      .card-body 
+        .row 
+          .col-8 
+            +change-multi(`/${adminPrefix}/products/change-multi?_method=PATCH`)
+          .col-4
+            if(role.permissions.includes("products_create"))
+              a(
+                href=`/${adminPrefix}/products/create`
+                class='btn btn-outline-success'
+              ) + Add new
+            
+        table(
+          class='table table-hover table-sm'
+          checkbox-multi
+        )
+          thead 
             tr 
-              td(
-                colspan='8'
-                class='text-center' 
-              ) No products found
+              th
+                input(type='checkbox' name='checkall')
+              th ID
+              th Image 
+              th Title
+              th Price
+              th Position
+              th Status
+              th Action
+          
+          tbody 
+            if (products.length > 0)
+              each product, index in products
+                tr
+                  td
+                    input(
+                      type="checkbox"
+                      name="id"
+                      value=product.id
+                    )
+                  td #{pagination.limitItems * (pagination.currentPage - 1) + index + 1} 
+                  td 
+                    img(
+                      src = product.thumbnail
+                      alt = product.title
+                      width="100px"
+                      heigh='auto'
+                    )
+                  td #{product.title}
+                  td $#{product.price}
+                  td 
+                    input(
+                      class='input-position'
+                      type='number'
+                      value=product.position 
+                      min='1'
+                      name="position"
+                    )
+                  td
+                    if (product.status == 'active') 
+                      button(
+                        class="badge badge-success"
+                        change-status-button 
+                        data-status=product.status 
+                        data-id=product.id 
+                      ) Active
+                    else 
+                      button(
+                        class="badge badge-danger"
+                        change-status-button
+                        data-status=product.status 
+                        data-id=product.id
+                      ) Inactive
+                  td
+                    if(role.permissions.includes("products_view"))
+                      a(
+                        href=`/${adminPrefix}/products/detail/${product.id}`
+                        class='btn btn-secondary btn-sm'
+                      ) Detail 
+                    if(role.permissions.includes("products_edit"))
+                      a(
+                        href=`/${adminPrefix}/products/edit/${product.id}`
+                        class='btn btn-warning btn-sm'
+                        ) Edit 
+                    if(role.permissions.includes("products_delete")) 
+                      button(
+                        delete-button
+                        data-id=product.id
+                        class='btn btn-danger btn-sm ml-1'
+                      ) Delete 
+            else 
+              tr 
+                td(
+                  colspan='8'
+                  class='text-center' 
+                ) No products found
 
-  form(
-    id='form-change-status'
-    method='POST'
-    action=''
-    data-path=`/${adminPrefix}/products/change-status`
-  )
+    form(
+      id='form-change-status'
+      method='POST'
+      action=''
+      data-path=`/${adminPrefix}/products/change-status`
+    )
 
-  form(
-    id='form-delete-item'
-    method='POST'
-    action=''
-    data-path=`/${adminPrefix}/products/delete`
-  )
+    form(
+      id='form-delete-item'
+      method='POST'
+      action=''
+      data-path=`/${adminPrefix}/products/delete`
+    )
 
-  +pagination(pagination)
+    +pagination(pagination)
+
+  else 
+    div(class='mt-20')
+      h4 Account does not have permission to view products
+      i Contact 
+      strong admin
+      i  to add permissions to your account

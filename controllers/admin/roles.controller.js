@@ -5,11 +5,11 @@ const systemConfig = require('../../config/system');
 // [GET] /admin/roles/
 module.exports.index = async (req, res) => {
   try {
-    const roles = await Role.find({ deleted: false });
+    const allRoles = await Role.find({ deleted: false });
 
     res.render('admin/pages/roles/index.pug', {
       pageTitle: "Roles Management Page",
-      roles: roles
+      allRoles: allRoles
     });
 
   } catch (error) {

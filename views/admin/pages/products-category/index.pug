@@ -3,48 +3,55 @@ include ../../mixins/alert.pug
 include ../../mixins/table-tree.pug
 
 block main
-  h1(class="mb-4") Products Category 
+  if(role.permissions.includes("products-category_view"))
+    h1(class="mb-4") Product Categories 
 
-  +alert-error(5000)
-  +alert-success(5000)
+    +alert-error(5000)
+    +alert-success(5000)
 
-  .card.mb-3
-    .card-header List
-    .card-body
-      .row
-        .col-8
-        .col-4.text-right
-          a(
-            href=`/${adminPrefix}/products-category/create`
-            class="btn btn-outline-success"
-          ) + Add new
+    .card.mb-3
+      .card-header List
+      .card-body
+        .row
+          .col-8
+          .col-4.text-right
+            if(role.permissions.includes("products-category_create"))
+              a(
+                href=`/${adminPrefix}/products-category/create`
+                class="btn btn-outline-success mb-20"
+              ) + Add new
 
-      table(
-        class="table table-hover table-sm"
-      )
-        thead
-          tr
-            th
-            th Index
-            th Image
-            th Title
-            th Position
-            th Status
-            th Action 
+        table(
+          class="table table-hover table-sm"
+        )
+          thead
+            tr(class="mid-pos")
+              th Index
+              th Image
+              th Title
+              th Position
+              th Status
+              th Action 
 
-          tbody
-            +table-tree(records)
+            tbody
+              +table-tree(records)
 
-          form(
-            id='form-change-status'
-            method='POST'
-            action=''
-            data-path=`/${adminPrefix}/products-category/change-status`
-          )
+            form(
+              id='form-change-status'
+              method='POST'
+              action=''
+              data-path=`/${adminPrefix}/products-category/change-status`
+            )
 
-          form(
-            id='form-delete-item'
-            method='POST'
-            action=''
-            data-path=`/${adminPrefix}/products-category/delete`
-          )
+            form(
+              id='form-delete-item'
+              method='POST'
+              action=''
+              data-path=`/${adminPrefix}/products-category/delete`
+            )
+  else 
+    div(class='mt-20')
+      h4 Account does not have permission to view product categories
+      i Contact 
+      strong admin
+      i  to add permissions to your account
