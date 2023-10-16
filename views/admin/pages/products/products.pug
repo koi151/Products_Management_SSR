@@ -6,6 +6,7 @@ include ../../mixins/pagination.pug
 include ../../mixins/changeMulti.pug
 include ../../mixins/sort.pug
 include ../../mixins/alert.pug
+include ../../mixins/moment.pug
 
 block main 
   if(role.permissions.includes("products_view"))
@@ -48,7 +49,7 @@ block main
           checkbox-multi
         )
           thead 
-            tr 
+            tr(class='mid-pos')
               th
                 input(type='checkbox' name='checkall')
               th ID
@@ -57,29 +58,30 @@ block main
               th Price
               th Position
               th Status
+              th Created By
               th Action
           
           tbody 
             if (products.length > 0)
               each product, index in products
-                tr
-                  td
+                tr(class='mid-pos')
+                  td(class='align-middle')
                     input(
                       type="checkbox"
                       name="id"
                       value=product.id
                     )
-                  td #{pagination.limitItems * (pagination.currentPage - 1) + index + 1} 
-                  td 
+                  td(class='align-middle') #{pagination.limitItems * (pagination.currentPage - 1) + index + 1} 
+                  td(class='align-middle')
                     img(
-                      src = product.thumbnail
-                      alt = product.title
+                      src=product.thumbnail
+                      alt=product.title
                       width="100px"
                       heigh='auto'
                     )
-                  td #{product.title}
-                  td $#{product.price}
-                  td 
+                  td(class='align-middle') #{product.title}
+                  td(class='align-middle') $#{product.price}
+                  td(class='align-middle') 
                     input(
                       class='input-position'
                       type='number'
@@ -87,7 +89,7 @@ block main
                       min='1'
                       name="position"
                     )
-                  td
+                  td(class='align-middle')
                     if (product.status == 'active') 
                       button(
                         class="badge badge-success"
@@ -102,7 +104,16 @@ block main
                         data-status=product.status 
                         data-id=product.id
                       ) Inactive
-                  td
+
+                  td(class='align-middle')
+                    if (product.createdBy.accountFullName)
+                      div #{product.createdBy.accountFullName}
+                      +formatDateTime(product.createdBy.createdAt)
+
+                    else 
+                      div No information
+
+                  td(class='align-middle')
                     if(role.permissions.includes("products_view"))
                       a(
                         href=`/${adminPrefix}/products/detail/${product.id}`
