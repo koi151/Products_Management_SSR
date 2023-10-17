@@ -13,9 +13,15 @@ module.exports.index = async (req, res) => {
 
     const newFeaturedProducts = productsHelper.productsNewPrice(featuredProducts);
 
+    const newProducts = await Product.find({
+      deleted: false,
+      status: "active", 
+    }).sort({ position: "desc" }).limit(6);
+
     res.render("client/pages/home/index", {
       pageTitle: 'Home Page',
       featuredProducts: newFeaturedProducts,
+      newProducts: newProducts
     })
 
   } catch (error) {

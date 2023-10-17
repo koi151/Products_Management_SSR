@@ -4,11 +4,17 @@ include ../../../client/mixins/product-layout.pug
 
 block main
   h1 Main page
+
   .section-products-featured.my-5
     .container
       .row
         .col-12
           +box-head("Feature Products")
-
       +product-layout(featuredProducts)
-      
+  
+  .section-products-featured.my-5
+    .container
+      .row
+        .col-12
+          +box-head("New Products")
+      +product-layout(newProducts)

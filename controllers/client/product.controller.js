@@ -1,7 +1,7 @@
 const Product = require('../../models/products.model');
+const ProductCategory = require('../../models/products-category.model');
 
 const productsHelper = require("../../helpers/products");
-
 
 // [GET] /products
 module.exports.index = async (req, res) => {
@@ -33,6 +33,36 @@ module.exports.detail = async (req, res) => {
       product: product
     })
   } catch (error) {
-    req.flash('error', 'Page is not exists, directed to home page')
+    console.log("ERROR OCCURRED:", error);
+    req.flash('error', 'Page is not exists, directed to home page');
+    res.redirect("back");
+  }
+}
+
+// [GET] /products/:slugCategory
+module.exports.category = async (req, res) => {
+  try {
+    const productCategory = await ProductCategory({
+      slug: req.params.slugCategory,
+      deleted: false,
+      status: "active"
+    })
+
+    console.log('id:', productCategory.id);
+    const products = await Product.find({
+      product_category_id: productCategory.id,
+      deleted: false,
+      status: "active"
+    })
+
+    console.log(products)
+
+    res.send("TESTING OK");
+    // res.render("client/pages/")
+
+  } catch (error) {
+    console.log("ERROR OCCURRED:", error);
+    req.flash('error', 'Page is not exists, directed to home page');
+    res.redirect("back");
   }
 }
