@@ -59,6 +59,7 @@ block main
               th Position
               th Status
               th Created By
+              th Lastest update
               th Action
           
           tbody 
@@ -105,11 +106,20 @@ block main
                         data-id=product.id
                       ) Inactive
 
-                  td(class='align-middle')
+                  td(
+                    class='align-middle'
+                    style="max-width: 10rem"
+                  )
                     if (product.createdBy.accountFullName)
                       div #{product.createdBy.accountFullName}
-                      +formatDateTime(product.createdBy.createdAt)
+                      +formatDate(product.createdBy.createdAt)
+                    else 
+                      div No information
 
+                  td(class='align-middle')
+                    if (product.updatedBy.length > 0)
+                      div #{product.updatedBy.slice(-1)[0].accountFullName}
+                      +formatDateTime(product.updatedBy.slice(-1)[0].updatedAt)
                     else 
                       div No information
 
