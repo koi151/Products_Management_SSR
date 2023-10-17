@@ -1,0 +1,75 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block main
+  h1(class="mb-4") Update personal information
+
+  +alert-success(5000)
+  +alert-error(5000)
+
+  form(
+    action=`/${adminPrefix}/my-account/edit?_method=PATCH`
+    method="POST"
+    enctype="multipart/form-data"
+  )
+    div(class="form-group")
+      label(for="fullName") Full name *
+      input(
+        type="text"
+        class="form-control"
+        id="fullName"
+        name="fullName"
+        required
+        value=user.fullName
+      )
+    div(class="form-group")
+      label(for="email") Email *
+      input(
+        type="email"
+        class="form-control"
+        id="email"
+        name="email"
+        required
+        value=user.email
+      )
+    div(class="form-group")
+      label(for="password") Password
+      input(
+        type="password"
+        class="form-control"
+        id="password"
+        name="password"
+        required
+      )
+    div(class="form-group")
+      label(for="phone") Phone number
+      input(
+        type="text"
+        class="form-control"
+        id="phone"
+        name="phone"
+        value=user.phone
+      )
+    div(
+      class="form-group"
+      upload-image
+    )
+      label(for="avatar") Avatar
+      input(
+        type="file"
+        class="form-control-file"
+        id="avatar"
+        name="avatar"
+        accept="image/*"
+        upload-image-input
+      )
+      img(
+        src=user.avatar
+        class="image-preview"
+        upload-image-preview
+      )
+    div(class="form-group")
+      button(
+        type="submit"
+        class="btn btn-primary"
+      ) Update

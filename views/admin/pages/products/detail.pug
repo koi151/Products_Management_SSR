@@ -6,6 +6,20 @@ block main
       h1(class="mb-4") #{product.title}
     hr
 
+    if (product.featured)
+      div(class="mb-4")
+        span Feature:
+        if (product.status === "1")
+          span(
+            class="badge badge-success"
+            style='margin-left: 10px'
+          ) Yes
+        else
+          span(
+            class="badge badge-danger"
+            style='margin-left: 10px'
+          ) No
+
     if (product.price)
       div(class="mb-4") Price: <b>#{product.price}$</b>
 
@@ -26,9 +40,15 @@ block main
       div(class="mb-4")
         span Status:
         if (product.status === "active")
-          span(class="badge badge-success") Active
+          span(
+            class="badge badge-success"
+            style='margin-left: 10px'
+            ) Active
         else
-          span(class="badge badge-danger") Inactive
+          span(
+            class="badge badge-danger"
+            style='margin-left: 10px'
+          ) Inactive
 
     if (product.position)
       div(class="mb-4") Position: <b>#{product.position}</b>

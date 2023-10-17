@@ -1,4 +1,14 @@
 extends ../../layouts/default.pug
+include ../../../client/mixins/box-head.pug
+include ../../../client/mixins/product-layout.pug
 
 block main
-  h1 Trang chủ
+  h1 Main page
+  .section-products-featured.my-5
+    .container
+      .row
+        .col-12
+          +box-head("Feature Products")
+
+      +product-layout(featuredProducts)
+      

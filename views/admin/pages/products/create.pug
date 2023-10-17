@@ -5,6 +5,7 @@ include ../../mixins/select-tree.pug
 
 block main
   if(role.permissions.includes("products_create"))
+
     +alert-error(5000)
     +alert-success(5000)
 
@@ -38,6 +39,25 @@ block main
             if(category)
               +select-tree(category)
 
+      div(class="form-group form-check form-check-inline")
+        input(
+          type="radio"
+          class="form-check-input"
+          id="featured1"
+          name="featured"
+          value="1"
+        )
+        label(for="featured1" class="form-check-label") Feature
+      div(class="form-group form-check form-check-inline")
+        input(
+          type="radio"
+          class="form-check-input"
+          id="featured0"
+          name="featured"
+          value="0"
+          checked
+        )
+        label(for="featured0" class="form-check-label") Default
 
       div(class="form-group")
         label(for="desc") Description

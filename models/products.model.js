@@ -11,6 +11,7 @@ const productsSchema = new mongoose.Schema({
   thumbnail: String,
   status: String,
   position: Number,
+  featured: String,
   product_category_id: {
     type: String,
     default: ""

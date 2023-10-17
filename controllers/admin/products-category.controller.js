@@ -127,11 +127,17 @@ module.exports.detail = async (req, res) => {
 // [PATCH] /admin/products-category/:status/:id
 module.exports.changeStatus = async (req, res) => {
   try {
-    const id = req.params.id;
-    const newStatus = req.params.status;
+    const updatedBy = {
+      account_id: res.locals.user.id,
+      updatedAt: new Date()
+    }
+
     await ProductCategory.updateOne(
-      { _id: id  }, 
-      { status: newStatus}
+      { _id: req.params.id  }, 
+      {
+        status: req.params.status,
+        $push: { updatedBy: updatedBy }
+      }
     )
 
     req.flash('success', "Update status successful !");

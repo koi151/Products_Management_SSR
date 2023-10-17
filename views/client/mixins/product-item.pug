@@ -1,0 +1,13 @@
+mixin product-item(product)
+  .col-4.mb-3 
+    .product-item 
+      .inner-image 
+        img(src=product.thumbnail, alt=product.title)
+        if(product.featured == "1")
+          .inner-featured Featured
+      .inner-content 
+        h3.inner-title
+          a(href=`/products/${product.slug}`)  #{product.title}
+        .inner-price-new $#{product.newPrice}
+        .inner-price-old $#{product.price}
+        .inner-discount -#{product.discountPercentage}%

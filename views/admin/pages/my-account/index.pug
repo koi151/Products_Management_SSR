@@ -1,0 +1,35 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block main
+  h1(class="mb-4") Personal Information
+  
+  +alert-success(4000)
+  +alert-error(4000)
+
+  if (user.avatar)
+    img(src=user.avatar width="150px" class="mb-3")
+  else
+    img(src="/admin/images/avatar.png" width="150px" class="mb-3")
+
+  if (user.fullName)
+    p Full name: <b>#{user.fullName}</b>
+
+  if (user.email)
+    p Email: <b>#{user.email}</b>
+
+  if (user.phone)
+    p Phone number: <b>#{user.phone}</b>
+
+  p 
+    span Status: 
+    span
+      <b>#{user.status === "active" ? "Hoạt động": "Dừng hoạt động"}</b>
+
+  if (role.title)
+    p Permissions: <b>#{role.title}</b>
+
+  a(
+	    href=`/${adminPrefix}/my-account/edit`
+	    class="btn btn-primary"
+	  ) Edit information

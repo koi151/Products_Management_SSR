@@ -75,8 +75,6 @@ module.exports.index = async (req, res) => {
       }
     }
       
-    
-
     if (products.length > 0 || productsCount == 0) {
       res.render("admin/pages/products/products.pug", {
         pageTitle: 'Admin Product Page',
@@ -105,29 +103,24 @@ module.exports.index = async (req, res) => {
 // [PATCH] /admin/products/change-status/:status/:id
 module.exports.changeStatus = async (req, res) => {
   try {
-    if (role.permissions.includes("products_edit")) // !!
-    {
-      let id = req.params.id;
-      let status = req.params.status;
+    let id = req.params.id;
+    let status = req.params.status;
 
-      const updatedBy = {
-        account_id: res.locals.user.id,
-        updatedAt: new Date()
-      }
-
-      await Product.updateOne(
-        { _id:  id}, 
-        { 
-          status: status,
-          $push: { updatedBy: updatedBy }
-        }
-      );
-
-      req.flash('success', 'Update status successful !');
-      res.redirect('back');
-    } else {
-      req.flash('error', 'Account do not have permission to change product status !');
+    const updatedBy = {
+      account_id: res.locals.user.id,
+      updatedAt: new Date()
     }
+
+    await Product.updateOne(
+      { _id:  id}, 
+      { 
+        status: status,
+        $push: { updatedBy: updatedBy }
+      }
+    );
+
+    req.flash('success', 'Update status successful !');
+    res.redirect('back');
 
   } catch (error) {
     console.log("ERROR OCCURRED:", error);
