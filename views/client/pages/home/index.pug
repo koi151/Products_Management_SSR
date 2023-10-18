@@ -1,9 +1,12 @@
 extends ../../layouts/default.pug
 include ../../../client/mixins/box-head.pug
 include ../../../client/mixins/product-layout.pug
+include ../../../client/mixins/alert.pug
 
 block main
   h1 Main page
+    +alert-error(4000)
+    +alert-success(4000)
 
   .section-products-featured.my-5
     .container

@@ -42,27 +42,51 @@ module.exports.detail = async (req, res) => {
 // [GET] /products/:slugCategory
 module.exports.category = async (req, res) => {
   try {
-    const productCategory = await ProductCategory({
-      slug: req.params.slugCategory,
+    const slugCategory = req.params.slugCategory;
+
+    const category = await ProductCategory.findOne({
+      slug: slugCategory,
       deleted: false,
       status: "active"
     })
 
-    console.log('id:', productCategory.id);
+    const getSubCategories = async (parentId) => {
+      const subs = await ProductCategory.find({
+        parent_id: parentId,
+        deleted: false,
+        status: 'active'
+      })
+
+      let allSub = [...subs];
+
+      for (const sub of subs) {
+        const childs = await getSubCategories(sub.id);
+        allSub = allSub.concat(childs);
+      }
+
+      return allSub;
+    }
+
+    const subCategoriesList = await getSubCategories(category.id);  
+
+    const subCategoriesIdList = subCategoriesList.map(item => item.id); 
+
     const products = await Product.find({
-      product_category_id: productCategory.id,
+      product_category_id: { $in: [category.id, ...subCategoriesIdList] },
       deleted: false,
       status: "active"
+    }).sort({ position: "desc" })
+
+    const newProducts = productsHelper.productsNewPrice(products);
+
+    res.render("client/pages/products/index", {
+      pageTitle: category.title,
+      products: newProducts
     })
-
-    console.log(products)
-
-    res.send("TESTING OK");
-    // res.render("client/pages/")
 
   } catch (error) {
     console.log("ERROR OCCURRED:", error);
-    req.flash('error', 'Page is not exists, directed to home page');
+    req.flash('error', 'Error occurred, directed to home page');
     res.redirect("back");
   }
 }
