@@ -9,7 +9,7 @@ module.exports.index = async (req, res) => {
       deleted: false,
       status: "active",
       featured: "1"
-    }).limit(6);
+    }).sort({ position: "desc" }).limit(6);
 
     const newFeaturedProducts = productsHelper.productsNewPrice(featuredProducts);
 

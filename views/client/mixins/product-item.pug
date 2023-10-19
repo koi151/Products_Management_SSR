@@ -7,7 +7,7 @@ mixin product-item(product)
           .inner-featured Featured
       .inner-content 
         h3.inner-title
-          a(href=`/products/${product.slug}`)  #{product.title}
+          a(href=`/products/detail/${product.slug}`)  #{product.title}
         .inner-price-new $#{product.newPrice}
         .inner-price-old $#{product.price}
         .inner-discount -#{product.discountPercentage}%
