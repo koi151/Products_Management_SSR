@@ -1,7 +1,12 @@
 extends ../../layouts/default.pug
 include ../../mixins/box-head.pug
+include ../../mixins/alert.pug
 
 block main
+
+  +alert-success(2000)
+  +alert-error(2000)
+
   .product-detail
     .container.my-5
       .row
@@ -23,7 +28,7 @@ block main
             div(class="inner-price-old") #{product.price}$
 
           if (product.discountPercentage)
-            div(class="inner-percent") Sale off to <span>#{product.discountPercentage}$</span>
+            div(class="inner-percent") Sale off to <span>#{product.discountPercentage}%</span>
 
           if (product.stock)
             div(class="inner-stock") Stock: <span>#{product.stock}</span> products

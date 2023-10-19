@@ -5,13 +5,13 @@ include ../../mixins/alert.pug
 
 block main
 
-  //- +alert-success(4000)
-  //- +alert-error(4000)
+  +alert-success(4000)
+  +alert-error(4000)
 
   .container.my-3
     .row
       .col-12
         +box-head(pageTitle)
 
-    +product-layout(products)
+    +product-grid(products)
     
