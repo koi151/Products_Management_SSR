@@ -42,12 +42,12 @@ block main
                     if(role.permissions.includes("roles_view"))
                       a(
                         class="btn btn-secondary btn-sm"
-                        href=`/${adminPrefix}/roles/detail/${role.id}`
+                        href=`/${adminPrefix}/roles/detail/${singleRole.id}`
                       ) Detail
                     if(role.permissions.includes("roles_edit"))
                       a(
                         class="btn btn-warning btn-sm ml-1"
-                        href=`/${adminPrefix}/roles/edit/${role.id}`
+                        href=`/${adminPrefix}/roles/edit/${singleRole.id}`
                       ) Edit
                     if(role.permissions.includes("roles_delete"))
                       button(
