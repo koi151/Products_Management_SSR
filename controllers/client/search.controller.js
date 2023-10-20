@@ -2,6 +2,7 @@ const Product = require("../../models/products.model");
 
 const ProductsHelper = require("../../helpers/products"); 
 
+// [GET] /client/search
 module.exports.index = async (req, res) => {
   try {
     const keyword = req.query.keyword;

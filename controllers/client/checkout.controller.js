@@ -1,5 +1,6 @@
 const Product = require("../../models/products.model");
 const Cart = require("../../models/cart.model"); 
+const Order = require("../../models/order.model"); 
 
 const ProductsHelper = require("../../helpers/products");
 
@@ -44,8 +45,45 @@ module.exports.index = async (req, res) => {
 // [POST] /client/checkout/order
 module.exports.orderPost = async (req, res) => {
   try {
+    const cartId = req.cookies.cartId;
+    const userInfo = req.body;
 
-    res.send("TESTING OK");
+    let products = [];
+    const cart = await Cart.findOne({
+      _id: cartId
+    })
+
+    for (item of cart.products) {
+      const productObject = {
+        product_id: item.product_id,
+        quantity: item.quantity,
+        price: 0,
+        discountPercentage: 0
+      }
+       
+      const productInfo = await Product.findOne({
+        _id: item.product_id
+      })
+
+      productObject.price = productInfo.price;
+      productObject.discountPercentage = productInfo.discountPercentage;
+
+      products.push(productObject);
+    }
+    
+    const order = new Order({
+      cart_id: cartId,
+      userInfo: userInfo,
+      products: products
+    })
+    await order.save();
+
+    await Cart.updateOne(
+      { _id: cartId },
+      { products: [] }
+    )
+
+    res.redirect(`/checkout/success/${order.id}`)
 
   } catch (error) {
     console.log("ERROR OCCURRED:", error);
