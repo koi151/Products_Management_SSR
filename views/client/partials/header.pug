@@ -36,3 +36,4 @@ header.header
               a(href=pathProduct) Products
               if(layoutCategoryProducts)
                 +sub-menu(layoutCategoryProducts, pathProduct)
+              a(href='/cart') Cart (#{miniCart.totalQuantity ? miniCart.totalQuantity : "0"})
