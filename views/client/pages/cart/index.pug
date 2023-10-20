@@ -1,0 +1,59 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+include ../../mixins/alert.pug
+
+block main
+  +alert-success(5000)
+  +alert-error(5000)
+
+  .container.my-3
+    .row
+      .col-12
+        +box-head("Cart")
+
+    .row
+      .col-12
+        table(class="table table-bordered")
+          thead
+            tr(class='mid-pos')
+              th No
+              th Image
+              th Name
+              th Price
+              th Quantity
+              th Total price
+              th Action
+          tbody
+            if(cartDetail.products.length > 0)
+              each item, index in cartDetail.products
+                tr(class='mid-pos')
+                  td(class='mid-pos') #{index + 1}
+                  td(class='mid-pos')
+                    img(src=item.productInfo.thumbnail, alt=item.productInfo.title width="80px")
+                  td(class='mid-pos')
+                    a(href=`/products/detail/${item.productInfo.slug}`) #{item.productInfo.title}
+                  td(class='mid-pos') #{item.productInfo.newPrice}$
+                  td(class='mid-pos')
+                    input(
+                      type="number"
+                      name="quantity"
+                      value=item.quantity
+                      min="1"
+                      product-id=item.product_id
+                      style="width: 55px; text-align: center"
+                    )
+                  td(class='mid-pos') #{item.totalPrice}$
+                  td(class='mid-pos')
+                    a(  
+                      href=`/cart/delete/${item.product_id}`
+                      class="btn btn-danger"
+                    ) Delete
+            else
+              p There is no product in cart
+        
+        h3(class="text-right") Total order price: #{cartDetail.totalPrice}$
+        
+        div(class="text-right mt-3")
+          a(href="/checkout" class="btn btn-success") PAYMENT
+
+  script(src="/js/cart.js") 

@@ -246,3 +246,30 @@
   border-radius: 8px;
 }
 /* End product-detail */
+
+/* Align product td in the middle of tr */
+.mid-pos {
+  vertical-align: middle;
+  text-align: center;
+}
+
+.table td, .table th {
+  vertical-align: middle;
+}
+
+/* Margin shorthand */
+.mb-20 {
+  margin-bottom: 20px;
+}
+
+.mt-20 {
+  margin-top: 20px;
+}
+
+.ml-20 {
+  margin-left: 20px;
+}
+
+.mr-20 {
+  margin-right: 20px;
+}

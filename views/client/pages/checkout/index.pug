@@ -1,0 +1,90 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+include ../../mixins/alert.pug
+
+block main
+  +alert-success(5000)
+  +alert-error(5000)
+
+  .container.my-3
+    .row
+      .col-12
+        +box-head("Order")
+
+    .row
+      .col-12
+        table(class="table table-bordered")
+          thead
+            tr(class='mid-pos')
+              th No
+              th Image
+              th Name
+              th Price
+              th Quantity
+              th Total
+          tbody
+            if(cartDetail.products.length > 0)
+              each item, index in cartDetail.products
+                tr
+                  td(class="mid-pos") #{index + 1}
+                  td(class="mid-pos")
+                    img(
+                      src=item.productInfo.thumbnail
+                      alt=item.productInfo.title
+                      width="80px"
+                    )
+                  td(class="mid-pos") #{item.productInfo.title}
+                  td(class="mid-pos") #{item.productInfo.newPrice} $
+                  td(class="mid-pos") #{item.quantity}
+                  td(class="mid-pos font-weight-bold") #{item.totalPrice} $
+            else
+              tr
+                td(
+                  class="mid-pos"
+                  colspan="7"
+                  class="text-center"
+                ) Empty Cart
+        if(cartDetail.products.length > 0)
+          h3(class="text-right mt-20") Total payment: #{cartDetail.totalPrice}$
+
+
+    if(cartDetail.products.length > 0)
+      .row
+        .col-12
+          .card.p-4.my-4
+            form(
+              action="/checkout/order"
+              method="POST"
+            )
+              div(class="form-group")
+                label(for="fullName") Full Name
+                input(
+                  type="text"
+                  class="form-control"
+                  id="fullName"
+                  name="fullName"
+                  required
+                )
+              div(class="form-group")
+                label(for="phone") Phone number
+                input(
+                  type="text"
+                  class="form-control"
+                  id="phone"
+                  name="phone"
+                  required
+                )
+              div(class="form-group")
+                label(for="address") Address
+                input(
+                  type="text"
+                  class="form-control"
+                  id="address"
+                  name="address"
+                  required
+                )
+              div(class="form-group")
+                button(
+                  type="submit"
+                  class="btn btn-success btn-block"
+                ) ORDER
