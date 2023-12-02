@@ -1,8 +1,6 @@
 const Cart = require("../../models/cart.model");
 const Product = require("../../models/products.model");
 
-const systemConfig = require("../../config/system");
-
 const ProductsHelper = require("../../helpers/products");
 
 // [GET] /client/cart
@@ -43,6 +41,30 @@ module.exports.index = async (req, res) => {
   }
 }
 
+// [GET] /client/cart
+module.exports.deleteItem = async (req, res) => {
+  try {
+    const cartId = req.cookies.cartId;
+    const productId = req.params.productId;
+
+    await Cart.updateOne({
+      _id: cartId
+    }, {
+      "$pull": {
+        products: { "product_id": productId }
+      }
+    })
+
+    req.flash('Product has been deleted from cart')
+    res.redirect('back');
+
+  } catch(error) {
+    console.log("ERROR OCCURRED:", error)
+    req.flash("error", "Error occurred, redirect to previous page");
+    req.redirect("back")
+  }
+}
+
 // [POST] /client/cart/create/:id
 module.exports.addPost = async (req, res) => {
   try {
@@ -58,7 +80,6 @@ module.exports.addPost = async (req, res) => {
     const productExisted = cart.products.find(product => product.product_id == productId);
 
     if (productExisted) {
-      console.log('updated quantity');
       const newQuantity = productExisted.quantity + quantityAdd;
       
       await Cart.updateOne(

@@ -12,3 +12,13 @@ if (showAlert) {
     showAlert.classList.add('alert-hidden');
   })
 }
+
+// BACK TO PREVIOUS PAGE
+const goBackButtons = document.querySelectorAll('[button-go-back]');
+if (goBackButtons.length > 0) {
+  goBackButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      history.back();
+    })
+  })
+}

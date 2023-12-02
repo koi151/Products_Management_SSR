@@ -26,6 +26,7 @@ module.exports.create = async (req, res) => {
   const records = await ProductCategory.find(criterias);
   const newRecords = createTreeHelper.tree(records);
 
+
   res.render('admin/pages/products-category/create.pug', {
     pageTitle: "Create product category",
     records: newRecords

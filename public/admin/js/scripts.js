@@ -179,6 +179,7 @@ if (uploadImage) {
   uploadImageInput.addEventListener('change', (e) => {
     if (e.target.files.length) {
       const image = URL.createObjectURL(e.target.files[0]);
+      console.log(image);
       uploadImageReview.src = image;
     }
   })
