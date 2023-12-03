@@ -42,6 +42,37 @@ module.exports.index = async (req, res) => {
   }
 }
 
+// [GET] /client/checkout/success/:cartId
+module.exports.success = async (req, res) => {
+  try {
+    const order = await Order.findOne({
+      _id: req.params.orderId
+    })
+
+    for (const product of order.products) {
+      const productInfo = await Product.findOne({
+        _id: product.product_id
+      }).select("title thumbnail")
+
+      product.productInfo = productInfo;
+      product.newPrice = ProductsHelper.productNewPrice(product);
+      product.totalPrice = product.newPrice * product.quantity;
+    }
+
+    order.totalPrice = order.products.reduce((sum, item) => sum + item.totalPrice, 0);
+
+    res.render("client/pages/checkout/success", {
+      pageTitle: 'Order Success',
+      order: order
+    });
+
+  } catch (error) {
+    console.log("ERROR OCCURRED:", error);
+    req.flash("error", "Error occurred, redirect to previous page");
+    res.redirect("back")
+  }
+}
+
 // [POST] /client/checkout/order
 module.exports.orderPost = async (req, res) => {
   try {

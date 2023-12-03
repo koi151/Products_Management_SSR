@@ -1,0 +1,67 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+
+block main
+  .container.my-3 
+    .row 
+      .col-12
+        +box-head('Order successful!') 
+    
+    .row
+      .col-12
+        div(class='alert alert-success')
+          | Order successful, your order is being processed as soon as possible !
+
+    if (order)
+      .row 
+        .col-12 
+          h4(class='mb-2') Personal Information 
+          table(class='table table-bordered')    
+            tbody 
+              tr 
+                td Full name 
+                td 
+                  b #{order.userInfo.fullName}
+              tr
+                td Phone number 
+                td
+                  b #{order.userInfo.phone}
+              tr 
+                td Address 
+                td 
+                  b #{order.userInfo.address}
+
+      .row 
+        .col-12 
+          h4(class='mb-2') Order Information
+          table(class='table table-bordered')   
+            thead 
+              tr 
+                th No 
+                th Image 
+                th Title 
+                th Price
+                th Quantity 
+                th Total price 
+            tbody 
+              if(order.products.length > 0)
+                each item, index in order.products 
+                  tr 
+                    td #{index + 1}
+                    td 
+                      img(
+                        src=item.productInfo.thumbnail
+                        alt=item.productInfo.title
+                        width='80px'
+                      )
+                    td #{item.productInfo.title}
+                    td $#{item.newPrice}
+                    td #{item.quantity}
+                    td $#{item.totalPrice}
+
+          if(order.products.length > 0)
+            h3(class='text-right') Total Order: $#{order.totalPrice} 
+
+
+
+
