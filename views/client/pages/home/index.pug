@@ -4,6 +4,9 @@ include ../../../client/mixins/product-layout.pug
 include ../../../client/mixins/alert.pug
 
 block main
+  +alert-error(3000)
+  +alert-success(3000)
+
   .section-products-featured.my-5
     .container
       .row
