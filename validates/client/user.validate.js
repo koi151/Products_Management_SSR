@@ -53,3 +53,19 @@ module.exports.loginPost = async (req, res, next) => {
 
   next();
 };
+
+module.exports.forgotPasswordPost = async (req, res, next) => {
+  if (!req.body.email) {
+    req.flash('error', "Email must not be empty");
+    res.redirect('back');
+    return;
+  }
+
+  if (!isValidEmail(req.body.email)) {
+    req.flash('error', "Invalid email format");
+    res.redirect('back');
+    return;
+  }
+
+  next();
+};

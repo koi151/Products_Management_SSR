@@ -1,11 +1,66 @@
 const Users = require('../../models/users.model')
+const ForgotPassword = require('../../models/forgot-password.model')
+
 const md5 = require("md5");
+const generateHelper = require('../../helpers/generateString');
 
 // [GET] /user/register
 module.exports.register = async (req, res) => {
   try {
     res.render("client/pages/user/register", {
       pageTitle: 'Register Page'
+    })
+
+  } catch (error) {
+    console.log('Error occurred:', error);
+    req.flash('error', 'Page is not exists, redirected to previous page');
+    res.redirect("back");
+  }
+}
+
+// [GET] /user/login
+module.exports.login = async (req, res) => {
+  try {
+    res.render("client/pages/user/login", {
+      pageTitle: 'Login Page'
+    })
+
+  } catch (error) {
+    console.log('Error occurred:', error);
+    req.flash('error', 'Page is not exists, redirected to previous page');
+    res.redirect("back");
+  }
+}
+
+// [GET] /user/logout
+module.exports.logout = async (req, res) => {
+  res.clearCookie('tokenUser');
+  req.flash('success', 'Account logged out')
+  res.redirect('/')
+}
+
+// [GET] /user/password/forgot
+module.exports.forgotPassword = async (req, res) => {
+  try {
+    res.render('client/pages/user/forgot-password', {
+      pageTitle: "Password Retrieval"
+    })
+
+  } catch (error) {
+    console.log('Error occurred:', error);
+    req.flash('error', 'Page is not exists, redirected to previous page');
+    res.redirect("back");
+  }
+}
+
+// [GET] /user/password/otp
+module.exports.otpPassword = async (req, res) => {
+  try {
+    const email = req.query.email;
+
+    res.render('client/pages/user/otp-password', {
+      pageTitle: "Authentication OTP",
+      email: email
     })
 
   } catch (error) {
@@ -46,27 +101,6 @@ module.exports.registerPost = async (req, res) => {
   }
 }
 
-// [GET] /user/login
-module.exports.login = async (req, res) => {
-  try {
-    res.render("client/pages/user/login", {
-      pageTitle: 'Login Page'
-    })
-
-  } catch (error) {
-    console.log('Error occurred:', error);
-    req.flash('error', 'Page is not exists, redirected to previous page');
-    res.redirect("back");
-  }
-}
-
-// [GET] /user/logout
-module.exports.logout = async (req, res) => {
-  res.clearCookie('tokenUser');
-  req.flash('success', 'Account logged out')
-  res.redirect('/')
-}
-
 // [POST] /user/login
 module.exports.loginPost = async (req, res) => {
   try {
@@ -99,6 +133,75 @@ module.exports.loginPost = async (req, res) => {
     res.cookie('tokenUser', user.tokenUser);
     req.flash('success', 'Login successful !')
     res.redirect('/')
+
+  } catch (error) {
+    console.log('Error occurred:', error);
+    req.flash('error', 'Page is not exists, redirected to previous page');
+    res.redirect("back");
+  }
+}
+
+// [POST] /user/password/forgot
+module.exports.forgotPasswordPost = async (req, res) => {
+  try {
+    const email = req.body.email;
+
+    const emailExisted = await Users.findOne({
+      email: email,
+      deleted: false
+    })
+
+    if (!emailExisted) {
+      req.flash('error', 'Email is not existed. Please try again');
+      res.redirect('back');
+      return;
+    }
+
+    // Create OTP code and save OTP, email to model
+    const otp = generateHelper.generateRandomNumber(6);
+
+    const forgotPasswordObj = {
+      email: email,
+      otp: otp,
+      expireAt: Date.now()
+    }
+
+    const forgotPassword = new ForgotPassword(forgotPasswordObj);
+    await forgotPassword.save();
+
+    // Send OTP to user email
+    res.redirect(`/user/password/otp?email=${email}`)
+
+  } catch (error) {
+    console.log('Error occurred:', error);
+    req.flash('error', 'Error occured, redirected to previous page');
+    res.redirect("back");
+  }
+}
+
+// [POST] /user/password/otp
+module.exports.otpPasswordPost = async (req, res) => {
+  try {
+    const email = req.body.email;
+    const otp = req.body.otp;
+
+    const result = await Users.findOne({
+      email: email,
+      otp: otp
+    })
+
+    if(!result) {
+      req.flash('error', 'OTP is not valid or expired');
+      res.redirect("back");
+      return;
+    }
+
+    const user = await Users.findOne({
+      email: email
+    })
+
+    res.cookie("tokenUser", user.tokenUser);
+    res.redirect("/user/password/reset")
 
   } catch (error) {
     console.log('Error occurred:', error);
