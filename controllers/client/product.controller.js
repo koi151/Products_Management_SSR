@@ -46,7 +46,7 @@ module.exports.detail = async (req, res) => {
     })
   } catch (error) {
     console.log("ERROR OCCURRED:", error);
-    // req.flash('error', 'Page is not exists, directed to home page');
+    req.flash('error', 'Page is not exists, directed to home page');
     res.redirect("back");
   }
 }

@@ -1,0 +1,48 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block main 
+  +alert-error(3000)
+  +alert-success(3000)
+
+  .container.my-5   
+    .row.justify-content-center 
+      .col-8 
+        h1(class='text-center') Register 
+        form(
+          action='/user/register'
+          method='POST'
+        ) 
+
+          div(class='form-group')
+            label(for='fullName') Full name 
+            input(
+              type='text'
+              class='form-control'
+              id='fullName'
+              name='fullName'
+              required
+            )
+          div(class='form-group')
+            label(for='email') Email
+            input(
+              type='email'
+              class='form-control'
+              id='email'
+              name='email'
+              required
+            )
+          div(class='form-group')
+            label(for='password') Password
+            input(
+              type='password'
+              class='form-control'
+              id='password'
+              name='password'
+              required
+            )
+          div(class='form-group')
+            button(
+              type='submit'
+              class='btn btn-primary btn-block'
+            ) Register

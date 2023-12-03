@@ -1,6 +1,17 @@
+function isValidEmail(email) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+
 module.exports.createPost = async (req, res, next) => {
   if (!req.body.fullName) {
     req.flash('error', "Name field must not be empty");
+    res.redirect('back');
+    return;
+  }
+
+  if (!isValidEmail(req.body.email)) {
+    req.flash('error', "Invalid email format");
     res.redirect('back');
     return;
   }

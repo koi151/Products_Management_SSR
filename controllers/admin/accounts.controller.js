@@ -50,6 +50,17 @@ module.exports.createPost = async (req, res) => {
   try {
     req.body.password = md5(req.body.password);
 
+    const emailExisted = await Account.findOne({
+      email: req.body.email,
+      deleted: false
+    })
+
+    if (emailExisted) {
+      req.flash('error', 'Email existed, please choose another email');
+      res.redirect("back");
+      return;
+    }
+
     const newAccount = new Account(req.body)
     await newAccount.save();
     
