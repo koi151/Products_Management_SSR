@@ -12,6 +12,7 @@ router.post("/register",
 );
 
 router.get("/login", controller.login);
+router.get("/logout", controller.logout);
 
 router.post("/login",
   validate.loginPost,

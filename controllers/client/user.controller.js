@@ -60,6 +60,12 @@ module.exports.login = async (req, res) => {
   }
 }
 
+// [GET] /user/logout
+module.exports.logout = async (req, res) => {
+  res.clearCookie('tokenUser');
+  req.flash('success', 'Account logged out')
+  res.redirect('/')
+}
 
 // [POST] /user/login
 module.exports.loginPost = async (req, res) => {
