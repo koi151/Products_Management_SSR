@@ -28,7 +28,6 @@ module.exports = (app) => {
   app.use("/checkout", checkoutRoutes);
   
   app.use("/user", userRoutes);
-  
-  app.use("/chat", chatRoutes);
 
+  app.use("/chat", chatRoutes);
 }

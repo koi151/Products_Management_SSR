@@ -9,8 +9,8 @@ module.exports.userInfo = async (req, res, next) => {
 
     if (user) {
       res.locals.user = user;
+      res.locals.user.id = user._id; // Addon, recheck 
     }
   }
-
   next();
 }

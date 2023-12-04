@@ -300,11 +300,14 @@
   border-radius: 15px;
   max-width: 16rem;
   width: fit-content;
+  margin-bottom: 1rem;
 }
 
 .chat .inner-outgoing {
   display: flex;
-  justify-content: flex-end;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-bottom: .2rem;
 }
 
 .chat .inner-outgoing .inner-content {

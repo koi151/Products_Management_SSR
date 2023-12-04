@@ -37,7 +37,7 @@ header.header
               if(layoutCategoryProducts)
                 +sub-menu(layoutCategoryProducts, pathProduct)
             li 
-              a(href='/cart') Cart (#{miniCart.totalQuantity ? miniCart.totalQuantity : "0"})
+              a(href='/cart') Cart (#{miniCart && miniCart.totalQuantity ? miniCart.totalQuantity : "0"})
             
             if (user)
               li 
