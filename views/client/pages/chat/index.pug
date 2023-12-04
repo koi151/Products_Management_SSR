@@ -1,0 +1,43 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+
+block main
+  .container.my-3
+    .row 
+      .col-12
+        +box-head('Chat')
+
+    .row
+      .col-12
+        .chat 
+          .inner-body 
+            .inner-incoming 
+              .inner-name Alex 
+              .inner-content 
+                | The meeting will be organise in Hall.
+            .inner-outgoing
+              .inner-content 
+                | I will be there soon
+            .inner-incoming 
+              .inner-name Alex 
+              .inner-content
+                | Be fast !
+            .inner-outgoing
+              .inner-content 
+                | I already come but why the door is locked 
+            .inner-incoming 
+              .inner-name Alex 
+              .inner-content Oh i forgot, the meeting scheledule changed :))
+          .inner-foot 
+            form(
+              class='inner-form'
+              action=''
+            )
+              input(
+                type='text'
+                placeholder='Type chat content...'
+                name='content'
+              )
+              button 
+                i.fa-solid.fa-paper-plane
+            

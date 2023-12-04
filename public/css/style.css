@@ -273,3 +273,84 @@
 .mr-20 {
   margin-right: 20px;
 }
+
+/* CHAT */
+.chat {
+  border: 1.5px solid #ccc;
+  border-radius: 10px;
+  padding: 1rem;
+}
+
+.chat .inner-name {
+  font-weight: 600;
+  font-size: 18px;
+  margin-left: 10px;
+  margin-bottom: .3rem;
+}
+
+.chat .inner-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.chat .inner-incoming .inner-content {
+  background: #ddd;
+  padding: .5rem 1rem;
+  color: #000;
+  border-radius: 15px;
+  max-width: 16rem;
+  width: fit-content;
+}
+
+.chat .inner-outgoing {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.chat .inner-outgoing .inner-content {
+  padding: .5rem 1rem;
+  background:rgb(4, 107, 138);
+  color: #fff;
+  border-radius: 15px;
+  width: fit-content;
+  max-width: 16rem;
+}
+
+.chat .inner-form {
+  display: flex;
+  align-items: center;
+}
+
+.chat .inner-form input {
+  flex: 1;
+  height: 32px;
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  padding: 0 10px;
+  outline: none;
+}
+
+.chat .inner-foot {
+  margin-top: 3rem;
+  position: relative;
+}
+
+.chat .inner-foot input {
+  padding: 1.25rem 1rem;
+  width: 93%;
+}
+
+.chat .inner-form button {
+  border-radius: 15px;
+  border: 1px solid rgb(4, 107, 138);
+  background:rgb(4, 107, 138);
+  color: #fff;
+  height: 32px;
+  padding: 0 10px;
+  width: 7%;
+  padding: 1.25rem 1rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
