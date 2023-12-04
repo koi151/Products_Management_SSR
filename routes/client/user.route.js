@@ -3,6 +3,7 @@ const router = express.Router();
 
 const validate = require('../../validates/client/user.validate');
 const controller = require('../../controllers/client/user.controller');
+// const authMiddleware = require('')
 
 router.get("/register", controller.register);
 router.get("/login", controller.login);
