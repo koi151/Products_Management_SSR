@@ -9,4 +9,28 @@ formDataSend.addEventListener('submit', (e) => {
     e.target.elements.content.value = "";
   }
 })
-// END CLIENT SEND MESSAGE
+
+// SERVER RETURN MESSAGE
+socket.on('SERVER_RETURN_MESSAGE', (data) => {
+  const myId = document.querySelector('[my-id]').getAttribute('my-id');
+  const chatBody = document.querySelector('.chat .inner-body');
+  const newDiv = document.createElement("div")
+
+  let fullNameDisplay = ''
+  if (data.userId == myId) {
+    newDiv.classList.add('inner-outgoing');
+  } else {
+    newDiv.classList.add('inner-incoming');
+    fullNameDisplay = `<div class='inner-name'>${data.fullName}</div>`
+  }
+  
+  newDiv.innerHTML = `
+    ${fullNameDisplay}
+    <div class='inner-content'>${data.content}</div>
+  `
+  chatBody.appendChild(newDiv);
+})
+
+
+
+

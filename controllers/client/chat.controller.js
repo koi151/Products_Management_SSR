@@ -5,6 +5,7 @@ const Users = require('../../models/users.model');
 module.exports.index = async (req, res) => {
   try {
     const userId = res.locals.user.id;
+    const fullName = res.locals.user.fullName;
 
     // SocketIO
     _io.once('connection', (socket) => {
@@ -15,6 +16,13 @@ module.exports.index = async (req, res) => {
         })
 
         await chat.save();
+
+        // // Return data to client
+        _io.emit('SERVER_RETURN_MESSAGE', {
+          userId: userId,
+          fullName: fullName,
+          content: content
+        })
       })
     })
     // End SocketIO
@@ -27,7 +35,7 @@ module.exports.index = async (req, res) => {
       const userInfo = await Users.findOne({
         _id: chat.user_id
       }).select('fullName')
-      
+
       chat.userInfo = userInfo;
     }
 

@@ -9,7 +9,7 @@ block main
 
     .row
       .col-12
-        .chat 
+        .chat(my-id=user.id) 
           .inner-body 
             each chat in chats
               div(class=(chat.userInfo.id == user.id ? 'inner-outgoing' : 'inner-incoming'))
@@ -17,19 +17,6 @@ block main
                   .inner-name #{chat.userInfo.fullName} 
                 .inner-content 
                   | #{chat.content}
-            //- .inner-outgoing
-            //-   .inner-content 
-            //-     | I will be there soon
-            //- .inner-incoming 
-            //-   .inner-name Alex 
-            //-   .inner-content
-            //-     | Be fast !
-            //- .inner-outgoing
-            //-   .inner-content 
-            //-     | I already come but why the door is locked 
-            //- .inner-incoming 
-            //-   .inner-name Alex 
-            //-   .inner-content Oh i forgot, the meeting scheledule changed :))
           .inner-foot 
             form(
               class='inner-form'

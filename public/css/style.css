@@ -291,6 +291,8 @@
 .chat .inner-body {
   display: flex;
   flex-direction: column;
+  max-height: 450px;
+  overflow-y: auto;
 }
 
 .chat .inner-incoming .inner-content {
