@@ -2,20 +2,24 @@ import * as Popper from 'https://cdn.jsdelivr.net/npm/@popperjs/core@^2/dist/esm
 
 // CLIENT SEND MESSAGE
 const formDataSend = document.querySelector(".chat .inner-form");
-formDataSend.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const content = e.target.elements.content.value;
-  
-  if (content) {
-    socket.emit('CLIENT_SEND_MESSAGE', content);
-    e.target.elements.content.value = "";
-  }
-})
+if (formDataSend) {
+  formDataSend.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const content = e.target.elements.content.value;
+    
+    if (content) {
+      socket.emit('CLIENT_SEND_MESSAGE', content);
+      e.target.elements.content.value = "";
+      socket.emit('CLIENT_SEND_MESSAGE', 'hidden');
+    }
+  })
+}
 
 // SERVER RETURN MESSAGE
 socket.on('SERVER_RETURN_MESSAGE', (data) => {
   const myId = document.querySelector('[my-id]').getAttribute('my-id');
   const chatBody = document.querySelector('.chat .inner-body');
+  const boxTyping = document.querySelector('inner-list-typing');
   const newDiv = document.createElement("div")
 
   let fullNameDisplay = ''
@@ -30,22 +34,31 @@ socket.on('SERVER_RETURN_MESSAGE', (data) => {
     ${fullNameDisplay}
     <div class='inner-content'>${data.content}</div>
   `
-  chatBody.appendChild(newDiv);
+  chatBody.insertBefore(newDiv, boxTyping);
   chatBody.scrollTop = chatBody.scrollHeight;
 })
 
-// Scroll to newest chat
+// Scroll Chat to bottom
 const chatBody = document.querySelector('.chat .inner-body');
 if (chatBody) {
   chatBody.scrollTop = chatBody.scrollHeight;
 }
+// Show Typing
+var timeOut;
+const showTyping = () => {
+  socket.emit('CLIENT_SEND_TYPING', 'show');
+
+  clearTimeout(timeOut);
+
+  timeOut = setTimeout(() => {
+    socket.emit('CLIENT_SEND_TYPING', 'hidden');
+  }, 3000)
+}
 
 // Imoji picker
 const buttonIcon = document.querySelector('.button-icon');
-console.log('buttonIcon', buttonIcon)
 if (buttonIcon) {
   const tooltip = document.querySelector('.tooltip');
-  console.log('tooltip', tooltip)
   Popper.createPopper(buttonIcon, tooltip);
   buttonIcon.onclick = () => {
     tooltip.classList.toggle('shown')
@@ -54,13 +67,56 @@ if (buttonIcon) {
 
 const emojiPicker = document.querySelector('emoji-picker')
 if (emojiPicker) {
+  const inputChat = document.querySelector('.chat .inner-form input[name="content"]')
+
   emojiPicker.addEventListener('emoji-click', event => {
     const icon = event.detail.unicode; 
-    console.log(icon)
-    const inputChat = document.querySelector('.chat .inner-form input[name="content"]')
-    inputChat.value = inputChat.value + icon;
-    console.log('inputChat', inputChat)
+    inputChat.value = inputChat.value + icon; 
+
+    const end = inputChat.value.length;
+    inputChat.setSelectionRange(end, end);
+    inputChat.focus()
+
+    showTyping();
   });
+
+  // CLIENT SEND TYPING
+  if (inputChat) {
+    inputChat.addEventListener("keyup", () => {
+      showTyping();
+    })
+  }
 }
 
-  // .addEventListener('emoji-click', event => console.log(event.detail));
+// SERVER RETURN TYPING
+const typingListElements = document.querySelector('.chat .inner-list-typing');
+if (typingListElements) {
+  socket.on('SERVER_RETURN_TYPING', (data) => {
+    if (data.type == 'show') {
+      const existedTyping = typingListElements.querySelector(`[user-id="${data.userId}"]`);
+
+      if (!existedTyping) {
+        const boxTyping = document.createElement('div');
+        boxTyping.classList.add("box-typing");
+        boxTyping.setAttribute("user-id", data.userId);
+
+        boxTyping.innerHTML = `
+          <div class='inner-name'>${data.fullName}</div>
+          <div class='inner-dots'>
+            <span></span>
+            <span></span> 
+            <span></span> 
+          </div>
+        `
+        typingListElements.appendChild(boxTyping);
+        chatBody.scrollTop = chatBody.scrollHeight;
+      }
+    } else {
+      const boxTypingRemove = typingListElements.querySelector(`[user-id="${data.userId}"]`);
+      if (boxTypingRemove) {
+        typingListElements.removeChild(boxTypingRemove);
+      }
+    }
+  })
+}
+// END SERVER RETURN TYPING

@@ -17,11 +17,21 @@ module.exports.index = async (req, res) => {
 
         await chat.save();
 
-        // // Return data to client
+        // Return data to client
         _io.emit('SERVER_RETURN_MESSAGE', {
           userId: userId,
           fullName: fullName,
           content: content
+        })
+      })
+
+      // Return data to client while client typing
+      socket.on('CLIENT_SEND_TYPING', (type) => {
+        console.log('userId sending:', userId)
+        socket.broadcast.emit('SERVER_RETURN_TYPING', {
+          userId: userId,
+          fullName: fullName,
+          type: type
         })
       })
     })
