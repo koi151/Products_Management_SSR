@@ -342,7 +342,23 @@
 
 .chat .inner-foot input {
   padding: 1.25rem 1rem;
-  width: 93%;
+  width: 89%;
+}
+
+.chat .inner-form .button-icon {
+  border-radius: 15px;
+  border: 1px solid rgb(4, 107, 138);
+  background:rgb(4, 107, 138);
+  color: #fff;
+  height: 32px;
+  padding: 0 10px;
+  width: 4%;
+  padding: 1.25rem 1rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.25rem;
 }
 
 .chat .inner-form button {
@@ -358,4 +374,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+/* emoji-picker */
+.tooltip {
+  visibility: hidden;
+}
+
+.tooltip.shown {
+  visibility: visible;
+  opacity: 1;
 }
