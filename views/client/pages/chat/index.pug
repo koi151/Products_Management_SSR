@@ -23,6 +23,10 @@ block main
                     each image in chat.images
                       img(src=image)
             div(class='inner-list-typing')
+
+          .inner-preview-images
+            div(class='custom-file-container' data-upload-id='upload-image')
+
           .inner-foot 
             form(
               class='inner-form'
@@ -33,8 +37,13 @@ block main
                 placeholder='Type chat content...'
                 name='content'
               )
-              div(class='custom-file-container' data-upload-id='upload-image')
-              span(class='button-icon mx-2')
+
+              label(
+                for='file-upload-with-preview-upload-image'
+                class='button-icon-img mx-2 mb-0'
+              ) 
+                <i class="fa-regular fa-image"></i>
+              span(class='button-icon mr-2')
                 i.fa-regular.fa-face-smile
                 
               button 
