@@ -63,8 +63,6 @@ socket.on('SERVER_RETURN_MESSAGE', (data) => {
 
     imagesDisplay += `</div>`;
   }
-
-  console.log(imagesDisplay)
   
   newDiv.innerHTML = `
     ${fullNameDisplay}
@@ -73,6 +71,12 @@ socket.on('SERVER_RETURN_MESSAGE', (data) => {
   `
   chatBody.insertBefore(newDiv, boxTyping);
   chatBody.scrollTop = chatBody.scrollHeight;
+
+  // Preview Image
+  const boxImages = newDiv.querySelector('.inner-images');
+  if (boxImages) {
+    const gallery = new Viewer(boxImages);
+  }
 })
 
 // Scroll Chat to bottom
@@ -157,3 +161,8 @@ if (typingListElements) {
   })
 }
 // END SERVER RETURN TYPING
+
+// Preview image
+if (chatBody) {
+  const gallery = new Viewer(chatBody)
+}

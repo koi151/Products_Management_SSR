@@ -9,7 +9,6 @@ module.exports = async (res) => {
   _io.once('connection', (socket) => {
     socket.on('CLIENT_SEND_MESSAGE', async (data) => {
 
-      console.log('data image:', data.images)
       let images = []
       if (data.images) {
         for (const imageBuffer of data.images) {
@@ -18,7 +17,6 @@ module.exports = async (res) => {
         }
       }
 
-      console.log('images db', images)
       // Save to database
       const chat = new Chat({
         user_id: userId,
@@ -39,7 +37,6 @@ module.exports = async (res) => {
 
     // Return data to client while client typing
     socket.on('CLIENT_SEND_TYPING', (type) => {
-      console.log('userId sending:', userId)
       socket.broadcast.emit('SERVER_RETURN_TYPING', {
         userId: userId,
         fullName: fullName,
