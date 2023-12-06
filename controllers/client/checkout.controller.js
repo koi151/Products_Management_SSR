@@ -4,7 +4,7 @@ const Order = require("../../models/order.model");
 
 const ProductsHelper = require("../../helpers/products");
 
-// [GET] /client/checkout
+// [GET] /checkout
 module.exports.index = async (req, res) => {
   try {
     const cart = await Cart.findOne({
@@ -42,7 +42,7 @@ module.exports.index = async (req, res) => {
   }
 }
 
-// [GET] /client/checkout/success/:cartId
+// [GET] /checkout/success/:cartId
 module.exports.success = async (req, res) => {
   try {
     const order = await Order.findOne({
