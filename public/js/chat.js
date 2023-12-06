@@ -1,15 +1,30 @@
 import * as Popper from 'https://cdn.jsdelivr.net/npm/@popperjs/core@^2/dist/esm/index.js'
 
+// File upload with image
+const upload = new FileUploadWithPreview.FileUploadWithPreview('upload-image', {
+  multiple: true,
+  maxFileCount: 6
+});
+
 // CLIENT SEND MESSAGE
 const formDataSend = document.querySelector(".chat .inner-form");
 if (formDataSend) {
   formDataSend.addEventListener('submit', (e) => {
     e.preventDefault();
     const content = e.target.elements.content.value;
+    const images = upload.cachedFileArray || [];
     
-    if (content) {
-      socket.emit('CLIENT_SEND_MESSAGE', content);
+    if (content || images.length > 0) {
+      // send images
+      socket.emit('CLIENT_SEND_MESSAGE', {
+        content: content,
+        images: images
+      });
+
       e.target.elements.content.value = "";
+      upload.resetPreviewPanel();
+
+      // hide the typing effect
       socket.emit('CLIENT_SEND_MESSAGE', 'hidden');
     }
   })
@@ -22,17 +37,39 @@ socket.on('SERVER_RETURN_MESSAGE', (data) => {
   const boxTyping = document.querySelector('inner-list-typing');
   const newDiv = document.createElement("div")
 
-  let fullNameDisplay = ''
+  let fullNameDisplay = '';
+  let contentDisplay = '';
+  let imagesDisplay = '';
+
   if (data.userId == myId) {
     newDiv.classList.add('inner-outgoing');
   } else {
     newDiv.classList.add('inner-incoming');
     fullNameDisplay = `<div class='inner-name'>${data.fullName}</div>`
   }
+
+  if (data.content) {
+    contentDisplay = `<div class='inner-content'>${data.content}</div>`
+  }
+
+  if (data.images) {
+    imagesDisplay += `<div class="inner-images">`;
+
+    for (const image of data.images) {
+      imagesDisplay += `
+        <img src="${image}">
+      `;
+    }
+
+    imagesDisplay += `</div>`;
+  }
+
+  console.log(imagesDisplay)
   
   newDiv.innerHTML = `
     ${fullNameDisplay}
-    <div class='inner-content'>${data.content}</div>
+    ${contentDisplay}
+    ${imagesDisplay}
   `
   chatBody.insertBefore(newDiv, boxTyping);
   chatBody.scrollTop = chatBody.scrollHeight;
