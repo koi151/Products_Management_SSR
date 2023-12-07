@@ -24,11 +24,15 @@ block main
               div(class='inner-buttons')
                 button(
                   class='btn btn-sm btn-primary mr-1'
-                  button-add-friend=user.id
+                  btn-add-friend=user.id
                 ) Add friend
                 button(
                   class='btn btn-sm btn-secondary mr-1'
-                  button-cancel-friend=user.id
+                  btn-cancel-friend=user.id
                 ) Cancel
+
+  block script
+    script(type='module' src='/js/users.js')
+    
 
 
