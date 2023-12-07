@@ -2,7 +2,9 @@ const Users = require('../../models/users.model')
 const ForgotPassword = require('../../models/forgot-password.model')
 
 const md5 = require("md5");
+
 const generateHelper = require('../../helpers/generateString');
+const sendMailHelper = require('../../helpers/sendMail');
 
 // [GET] /user/register
 module.exports.register = async (req, res) => {
@@ -61,6 +63,20 @@ module.exports.otpPassword = async (req, res) => {
     res.render('client/pages/user/otp-password', {
       pageTitle: "Authentication OTP",
       email: email
+    })
+
+  } catch (error) {
+    console.log('Error occurred:', error);
+    req.flash('error', 'Page is not exists, redirected to previous page');
+    res.redirect("back");
+  }
+}
+
+// [GET] /user/password/reset
+module.exports.resetPassword = async (req, res) => {
+  try {
+    res.render('client/pages/user/reset-password', {
+      pageTitle: "Reset Password"
     })
 
   } catch (error) {
@@ -169,7 +185,15 @@ module.exports.forgotPasswordPost = async (req, res) => {
     const forgotPassword = new ForgotPassword(forgotPasswordObj);
     await forgotPassword.save();
 
-    // Send OTP to user email
+    // Send OTP code to gmail of user
+    const subject = 'OTP verification code for retriving password'
+    const content = `
+      <p>Your OTP verification code is <b>${otp}</b></p>
+      <p>OTP code expires in 2 minutes, do not share the code.</p>
+    `
+
+    sendMailHelper.sendMail(email, subject, content);
+
     res.redirect(`/user/password/otp?email=${email}`)
 
   } catch (error) {
@@ -185,7 +209,7 @@ module.exports.otpPasswordPost = async (req, res) => {
     const email = req.body.email;
     const otp = req.body.otp;
 
-    const result = await Users.findOne({
+    const result = await ForgotPassword.findOne({
       email: email,
       otp: otp
     })
@@ -205,7 +229,28 @@ module.exports.otpPasswordPost = async (req, res) => {
 
   } catch (error) {
     console.log('Error occurred:', error);
-    req.flash('error', 'Page is not exists, redirected to previous page');
+    req.flash('error', 'Error occurred, redirected to previous page');
+    res.redirect("back");
+  }
+}
+
+// [POST] /user/password/reset
+module.exports.resetPasswordPost = async (req, res) => {
+  try {
+    const tokenUser = req.cookies.tokenUser;
+
+    await Users.updateOne({
+      tokenUser: tokenUser
+    }, {
+      password: md5(req.body.password)
+    })
+
+    req.flash('Password changed successfully, welcome to home page !')
+    res.redirect('/');
+
+  } catch (error) {
+    console.log('Error occurred:', error);
+    req.flash('error', 'Error occurred, redirected to previous page');
     res.redirect("back");
   }
 }

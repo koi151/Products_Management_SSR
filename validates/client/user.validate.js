@@ -69,3 +69,25 @@ module.exports.forgotPasswordPost = async (req, res, next) => {
 
   next();
 };
+
+module.exports.resetPasswordPost = async (req, res, next) => {
+  if (!req.body.password) {
+    req.flash('error', "Password must not be empty");
+    res.redirect('back');
+    return;
+  }
+
+  if (!req.body.confirmPassword) {
+    req.flash('error', "Please confirm your password!");
+    res.redirect('back');
+    return;
+  }
+
+  if (req.body.confirmPassword != req.body.password) {
+    req.flash('error', "Password confirm does not match, please try again");
+    res.redirect('back');
+    return;
+  }
+
+  next();
+};
