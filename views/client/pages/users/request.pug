@@ -1,0 +1,35 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+
+block main 
+  .container.my-3
+
+    include ../../partials/list-user-buttons.pug
+
+    .row
+      .col-12 
+        +box-head('Friend request send')
+
+    .row 
+      each user in users
+        .col-6 
+          div(class='box-user add')
+            div(class='inner-avatar')
+              img(
+                src=(user.avatar ? user.avatar : "/images/img_avatar.png")
+                alt=user.fullName
+              )
+            div(class='inner-info')
+              div(class='inner-name') #{user.fullName}
+              div(class='inner-buttons')
+                button(
+                  class='btn btn-sm btn-primary mr-1'
+                  btn-add-friend=user.id
+                ) Add friend
+                button(
+                  class='btn btn-sm btn-secondary mr-1'
+                  btn-cancel-friend=user.id
+                ) Cancel
+
+  block script 
+    script(TYPE='module' src="/js/users.js") 

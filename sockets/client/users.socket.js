@@ -18,15 +18,50 @@ module.exports = async(req, res) => {
           }, {
             $push: { acceptFriends: currentUserId }
           })
+        }
 
-          // Add requestFriend data to current user
+        const userExisted = await Users.findOne({
+          _id: otherUserId,
+          requestFriendsL: currentUserId
+        })
+
+        if (!userExisted) {
+          // Add requestFriend feild to current user
           await Users.updateOne({
             _id: currentUserId
           }, {
             $push: { requestFriends: otherUserId }
           })
         }
+      })
 
+
+      socket.on('USER_CANCEL_FRIEND', async (otherUserId) => {
+        const friendExisted = await Users.findOne({
+          _id: otherUserId,
+          acceptFriends: currentUserId
+        })
+
+        if (friendExisted) {
+          // Remove acceptFriend feild to other user
+          await Users.updateOne({
+            _id: otherUserId
+          }, {
+            $pull: { acceptFriends: currentUserId }
+          });
+        }
+
+        const userExisted = await Users.findOne({
+          _id: otherUserId
+        })
+          // Remove requestFriend field to current user
+        if (userExisted) {
+          await Users.updateOne({
+            _id: currentUserId
+          }, {
+            $pull: { requestFriends: otherUserId }
+          })
+        }
       })
     })
 

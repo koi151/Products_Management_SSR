@@ -37,3 +37,33 @@ module.exports.notFriend = async (req, res) => {
     res.redirect("back");
   }
 }
+
+// [GET] /users/request
+module.exports.request = async (req, res) => {
+  try {
+    usersSocket(req, res); // SockerIO
+
+    const currentUserId = res.locals.user.id;
+    const currentUser = await Users.findOne({
+      _id: currentUserId,
+    })
+
+    const friendRequestList = currentUser.requestFriends;
+
+    const users = await Users.find({
+      _id: { $in: friendRequestList },
+      status: 'active',
+      deleted: false
+    })
+
+    res.render('client/pages/users/request', {
+      pageTitle: 'Request send',
+      users: users
+    })
+
+  } catch (error) {
+    console.log("ERROR OCCURRED:", error);
+    req.flash('error', 'Page is not exists, directed to home page');
+    res.redirect("back");
+  }
+}
