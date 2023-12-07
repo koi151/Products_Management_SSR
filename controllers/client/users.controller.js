@@ -67,3 +67,33 @@ module.exports.request = async (req, res) => {
     res.redirect("back");
   }
 }
+
+// [GET] /users/accept
+module.exports.accept = async (req, res) => {
+  try {
+    usersSocket(req, res);
+
+    const currentUserId = res.locals.user.id;
+    const currentUser = await Users.findOne({
+      _id: currentUserId,
+    })
+
+    const friendAcceptList = currentUser.acceptFriends;
+
+    const users = await Users.find({
+      _id: { $in: friendAcceptList },
+      status: 'active',
+      deleted: false
+    })
+
+    res.render('client/pages/users/accept', {
+      pageTitle: 'Request accept',
+      users: users
+    })
+
+  } catch (error) {
+    console.log("ERROR OCCURRED:", error);
+    req.flash('error', 'Page is not exists, directed to home page');
+    res.redirect("back");
+  }
+}

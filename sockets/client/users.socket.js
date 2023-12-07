@@ -22,7 +22,7 @@ module.exports = async(req, res) => {
 
         const userExisted = await Users.findOne({
           _id: otherUserId,
-          requestFriendsL: currentUserId
+          requestFriends: currentUserId
         })
 
         if (!userExisted) {
@@ -34,7 +34,6 @@ module.exports = async(req, res) => {
           })
         }
       })
-
 
       socket.on('USER_CANCEL_FRIEND', async (otherUserId) => {
         const friendExisted = await Users.findOne({
@@ -60,6 +59,36 @@ module.exports = async(req, res) => {
             _id: currentUserId
           }, {
             $pull: { requestFriends: otherUserId }
+          })
+        }
+      })
+
+      socket.on('USER_REFUSE_FRIEND', async (otherUserId) => {
+        const friendExisted = await Users.findOne({
+          _id: otherUserId,
+          requestFriends: currentUserId
+        })
+
+        if (friendExisted) {
+          // remove acceptFriend field of other user
+          await Users.updateOne({
+            _id: otherUserId
+          }, {
+            $pull: { requestFriends: currentUserId }
+          })
+        }
+
+        const userExisted = await Users.findOne({
+          _id: currentUserId,
+          acceptFriends: otherUserId
+        })
+
+        if (userExisted) {
+          // Add requestFriend feild to current user
+          await Users.updateOne({
+            _id: currentUserId
+          }, {
+            $pull: { acceptFriends: otherUserId }
           })
         }
       })
