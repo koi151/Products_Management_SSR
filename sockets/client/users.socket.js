@@ -5,7 +5,7 @@ module.exports = async(req, res) => {
     const currentUserId = res.locals.user.id;
 
     _io.once('connection', (socket) => {
-      socket.on('USER_ADD_FRIEND', async (otherUserId) => {
+      socket.on('CLIENT_ADD_FRIEND', async (otherUserId) => {
         const friendExisted = await Users.findOne({
           _id: otherUserId,
           acceptFriends: currentUserId
@@ -35,7 +35,7 @@ module.exports = async(req, res) => {
         }
       })
 
-      socket.on('USER_CANCEL_FRIEND', async (otherUserId) => {
+      socket.on('CLIENT_CANCEL_FRIEND', async (otherUserId) => {
         const friendExisted = await Users.findOne({
           _id: otherUserId,
           acceptFriends: currentUserId
@@ -63,7 +63,7 @@ module.exports = async(req, res) => {
         }
       })
 
-      socket.on('USER_REFUSE_FRIEND', async (otherUserId) => {
+      socket.on('CLIENT_REFUSE_FRIEND', async (otherUserId) => {
         const friendExisted = await Users.findOne({
           _id: otherUserId,
           requestFriends: currentUserId
@@ -89,6 +89,51 @@ module.exports = async(req, res) => {
             _id: currentUserId
           }, {
             $pull: { acceptFriends: otherUserId }
+          })
+        }
+      })
+
+      socket.on('CLIENT_ACCEPT_FRIEND', async (otherUserId) => {
+        // Add {user_id, room_chat_id } of OTHER USER to friendList of CURRENT USER
+        // Remove id of OTHER USER in acceptFriends feild of CURRENT USER
+
+        const currentUserExisted = await Users.findOne({
+          _id: currentUserId,
+          acceptFriends: otherUserId
+        })
+
+        if (currentUserExisted) {
+          await Users.updateOne({
+            _id: currentUserId
+          }, {
+            $push: {
+              friendList: {
+                user_id: otherUserId,
+                room_chat_id: ""
+              }
+            },
+            $pull: { acceptFriends: otherUserId }
+          })
+        }
+
+        // Add {user_id, room_chat_id } of CURRENT USER to friendList of OTHER USER
+        // Remove id of CURRENT USER in acceptFriends feild of OTHER USER
+        const otherExisted = await Users.findOne({
+          _id: otherUserId,
+          requestFriends: currentUserId
+        })
+
+        if (otherExisted) {
+          await Users.updateOne({
+            _id: otherUserId
+          }, {
+            $push: {
+              friendList: {
+                user_id: currentUserId,
+                room_chat_id: ""
+              }
+            },
+            $pull: { acceptFriends: currentUserId }
           })
         }
       })
