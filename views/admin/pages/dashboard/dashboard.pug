@@ -2,30 +2,70 @@ extends ../../layouts/default.pug
 include ../../mixins/alert.pug
 
 block main 
+  h1 Dashboard 
 
-  +alert-success(4000)
-  +alert-error(4000)
+  .row.mt-4 
+    .col-12 
+      .card.mb-4 
+        .card-header Account information
+        .card-body
+          if(user.avatar)
+            img(
+              src=user.avatar 
+              style='height: auto; margin-bottom: 15px; width: 100px'
+            )
+          if(user.fullName)
+            p Full Name: <b>#{user.fullName}</b>
+          if(user.email)
+            p Email: <b>#{user.email}</b>
+          if(user.phone)
+            p Phone: <b>#{user.phone}</b>
+          if(role.title)
+            p Roles: <b>#{role.title}</b>
 
-  strong(
-    class='mt-20'
-  ) Current user:
-  i(
-    style='margin-left: 10px'
-  ) #{user.fullName}
-  br
+          p Role detail:
+          if role.permissions.length > 0
+            ul(
+              class='role-list'
+            )
+              each permission in role.permissions
+                li #{permission}
+          else 
+            div(class='mt-20')
+              h4 Account does not have any permission in admin page 
+              i Contact 
+              strong admin
+              i  to add permissions to your account
 
-  if role.permissions.length > 0
-    strong(
-      style='margin-top: 10px'
-    ) Current roles:
-    ul(
-      class='role-list'
-    )
-      each permission in role.permissions
-        li #{permission}
-  else 
-    div(class='mt-20')
-      h4 Account does not have any permission in admin page 
-      i Contact 
-      strong admin
-      i  to add permissions to your account
+    .col-6 
+      .card.mb-4 
+        .card-header Product categories
+        .card-body
+          p Quantity <b>#{statistics.productCategories.total}</b>
+          p Active <b>#{statistics.productCategories.active}</b>
+          p Inactive <b>#{statistics.productCategories.inactive}</b>
+
+    .col-6 
+      .card.mb-4 
+        .card-header Products
+        .card-body
+          p Quantity <b>#{statistics.products.total}</b>
+          p Active <b>#{statistics.products.active}</b>
+          p Inactive <b>#{statistics.products.inactive}</b>
+
+    .col-6 
+      .card.mb-4 
+        .card-header Admin accounts
+        .card-body
+          p Quantity <b>#{statistics.adminAccounts.total}</b>
+          p Active <b>#{statistics.adminAccounts.active}</b>
+          p Inactive <b>#{statistics.adminAccounts.inactive}</b>
+
+    .col-6 
+      .card.mb-4 
+        .card-header Client accounts
+        .card-body
+          p Quantity <b>#{statistics.clientAccounts.total}</b>
+          p Active <b>#{statistics.clientAccounts.active}</b>
+          p Inactive <b>#{statistics.clientAccounts.inactive}</b>
+
