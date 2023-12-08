@@ -9,6 +9,7 @@ const rolesRouter = require('./roles.router');
 const accountsRouter = require('./accounts.router');
 const myAccountRouter = require('./my-account');
 const authRouter = require('./auth.router');
+const settingRouter = require("./setting.route")
 
 module.exports = (app) => {
   const ADMIN_PATH = '/' + configSystem.adminPrefix;
@@ -49,5 +50,16 @@ module.exports = (app) => {
     myAccountRouter
   );
 
-  app.use(ADMIN_PATH + "/auth", authRouter);
+  app.use(
+    ADMIN_PATH + "/auth", 
+    authMiddleware.authRequire, 
+    authRouter
+  );
+
+  app.use(
+    ADMIN_PATH + "/settings", 
+    authMiddleware.authRequire, 
+    settingRouter
+  );
+
 }

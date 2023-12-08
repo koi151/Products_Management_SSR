@@ -1,4 +1,6 @@
 const Users = require('../../models/users.model')
+const Cart = require('../../models/cart.model')
+
 const ForgotPassword = require('../../models/forgot-password.model')
 
 const md5 = require("md5");
@@ -159,6 +161,16 @@ module.exports.loginPost = async (req, res) => {
       res.redirect("back");
       return;
     }
+
+    // Save user_id to Cart collection
+    const userId = user.id;
+    const cartId = req.cookies.cartId;
+
+    await Cart.updateOne({
+      _id: cartId
+    }, {
+      user_id: userId
+    })
 
     res.cookie('tokenUser', user.tokenUser);
     req.flash('success', 'Login successful !')

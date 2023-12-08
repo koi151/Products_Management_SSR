@@ -18,3 +18,6 @@
       if(role.permissions.includes("accounts_view"))
         li 
           a(href=`/${adminPrefix}/accounts`) Accounts
+      if(role.permissions.includes("roles_permissions"))
+        li 
+          a(href=`/${adminPrefix}/settings/general`) General setting

@@ -1,0 +1,82 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block main 
+  h1 General Setting 
+
+  +alert-error(3000)
+  +alert-success(3000)
+
+  form(
+    action=`/${adminPrefix}/settings/general?_method=PATCH`
+    method='POST'
+    enctype="multipart/form-data"
+  )
+    div(class='form-group')
+      label(for='websiteName') Website name 
+      input(
+        type='text'
+        class='form-control'
+        id='websiteName'
+        name='websiteName'
+        value=(settingGeneral ? settingGeneral.websiteName : "")
+      )
+    div(
+      class='form-group'
+      upload-image
+    )
+      label(for='logo') Logo
+      input(
+        type='file'
+        class='form-control-file'
+        id='logo'
+        name='logo'
+        accept='image/*'
+        upload-image-input
+      )
+      img(
+        src=(settingGeneral ? settingGeneral.logo : "")
+        class='image-preview'
+        upload-image-preview
+      )
+    div(class='form-group')
+      label(for='phone') Phone 
+      input(
+        type='text'
+        class='form-control'
+        id='phone'
+        name='phone'
+        value=(settingGeneral ? settingGeneral.phone : "")
+      ) 
+    div(class='form-group')
+      label(for='email') Email 
+      input(
+        type='email'
+        class='form-control'
+        id='email'
+        name='email'
+        value=(settingGeneral ? settingGeneral.email : "")
+      )
+    div(class='form-group')
+      label(for='address') Address 
+      input(
+        type='text'
+        class='form-control'
+        id='address'
+        name='address'
+        value=(settingGeneral ? settingGeneral.address : "")
+      )
+    div(class='form-group')
+      label(for='copyright') Copyright 
+      input(
+        type='text'
+        class='form-control'
+        id='copyright'
+        name='copyright'
+        value=(settingGeneral ? settingGeneral.copyright : "")
+      ) 
+    div(class='form-group')
+      button(
+        type='submit'
+        class='btn btn-primary'
+      ) Update
