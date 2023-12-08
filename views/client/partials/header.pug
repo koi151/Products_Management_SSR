@@ -41,6 +41,8 @@ header.header
             
             if (user)
               li 
+                a(href='/user/info') #{user.fullName}
+              li 
                 a(href="/chat") Chat
               li 
                 a(href="/user/logout") Logout

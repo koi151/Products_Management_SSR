@@ -86,6 +86,20 @@ module.exports.resetPassword = async (req, res) => {
   }
 }
 
+// [GET] /user/info
+module.exports.userInfo = async (req, res) => {
+  try {
+    res.render('client/pages/user/info', {
+      pageTitle: "User Infomation"
+    })
+
+  } catch (error) {
+    console.log('Error occurred:', error);
+    req.flash('error', 'Page is not exists, redirected to previous page');
+    res.redirect("back");
+  }
+}
+
 // [POST] /user/register
 module.exports.registerPost = async (req, res) => {
   try {
