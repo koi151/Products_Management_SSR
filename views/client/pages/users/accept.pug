@@ -10,7 +10,7 @@ block main
       .col-12 
         +box-head('Friend request')
 
-    .row 
+    .row(data-users-accept=user.id)
       each user in users
         .col-6 
           div(class='box-user')

@@ -1,14 +1,35 @@
+// Supporting functions
+const refuseFriend = (btn) => {
+  btn.addEventListener('click', () => {
+    btn.closest('.box-user').classList.add('refuse');
+    const userId = btn.getAttribute('btn-refuse-friend');
+    socket.emit('CLIENT_REFUSE_FRIEND', userId);
+  }) 
+}
+
+const addFriend = (btn) => {
+  btn.addEventListener('click', () => {
+    btn.closest('.box-user').classList.add('add');
+    const userId = btn.getAttribute('btn-add-friend');
+    socket.emit('CLIENT_ADD_FRIEND', userId);
+  })
+}
+
+const acceptFriend = (btn) => {
+  btn.addEventListener('click', () => {
+    btn.closest('.box-user').classList.add('accepted');
+    const userId = btn.getAttribute('btn-accept-friend');
+    socket.emit('CLIENT_ACCEPT_FRIEND', userId);
+  })
+}
+
+
 /* Handle event add friend */
 const listAddFriendBtn = document.querySelectorAll('[btn-add-friend]');
 if (listAddFriendBtn.length > 0) {
   listAddFriendBtn.forEach(btn => {
-    btn.addEventListener('click', () => {
-      btn.closest('.box-user').classList.add('add');
-
-      const userId = btn.getAttribute('btn-add-friend');
-      socket.emit('CLIENT_ADD_FRIEND', userId);
-    })
-  })
+    addFriend(btn);
+  });
 }
 /* End handle event add friend */
 
@@ -30,12 +51,7 @@ if (listCancelFriendBtn.length > 0) {
 const listRefuseFriendBtn = document.querySelectorAll('[btn-refuse-friend]');
 if (listRefuseFriendBtn.length > 0) {
   listRefuseFriendBtn.forEach(btn => {
-    btn.addEventListener('click', () => {
-      btn.closest('.box-user').classList.add('refuse');
-
-      const userId = btn.getAttribute('btn-refuse-friend');
-      socket.emit('CLIENT_REFUSE_FRIEND', userId);
-    })
+    refuseFriend(btn);
   })
 }
 /* End handle event refuse friend request */
@@ -44,13 +60,7 @@ if (listRefuseFriendBtn.length > 0) {
 const listAcceptFriendBtn = document.querySelectorAll('[btn-accept-friend]');
 if (listAcceptFriendBtn.length > 0) {
   listAcceptFriendBtn.forEach(btn => {
-    btn.addEventListener('click', () => {
-      btn.closest('.box-user').classList.add('accepted');
-
-      const userId = btn.getAttribute('btn-accept-friend');
-
-      socket.emit('CLIENT_ACCEPT_FRIEND', userId);
-    })
+    acceptFriend(btn);
   })
 }
 /* End handle event accept friend request */
@@ -64,3 +74,59 @@ socket.on('SERVER_RETURN_ACCEPT_FRIEND_LENGTH', (data) => {
     userBadgeAccept.innerHTML = data.acceptFriendsLength;
   }
 })
+
+// SERVER_RETURN_CURRENT_USER_INFO
+socket.on('SERVER_RETURN_CURRENT_USER_INFO', (data) => {
+  // display users information
+
+  const dataUsersAccept = document.querySelector('[data-users-accept]');
+  const userId = dataUsersAccept.getAttribute("data-users-accept");
+
+  if (userId == data.userId) {
+    const newDiv = document.createElement('div');
+    newDiv.classList.add('col-6');
+    newDiv.setAttribute("data-users-accept", userId);
+
+    newDiv.innerHTML = `
+      <div class="box-user">
+        <div class="inner-avatar">
+          <img 
+            src="${data.currentUserInfo.avatar ? data.currentUserInfo.avatar : '/images/img_avatar.png'}" 
+            alt="${data.currentUserInfo.fullName}"
+          >
+        </div>
+        <div class="inner-info">
+          <div class="inner-name">
+            ${data.currentUserInfo.fullName}
+          </div>
+          <div class="inner-buttons">
+            <button class="btn btn-sm btn-primary mr-1" btn-accept-friend=${data.currentUserInfo._id}>
+              Accept
+            </button>
+            <button class="btn btn-sm btn-secondary mr-1" btn-refuse-friend=${data.currentUserInfo._id}>
+              Refuse
+            </button>
+            <button class="btn btn-sm btn-secondary mr-1" btn-deleted-friend="" disabled="">
+              Refused
+            </button>
+            <button class="btn btn-sm btn-secondary mr-1" btn-accepted-friend="" disabled="">
+              Accepted
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    dataUsersAccept.appendChild(newDiv);
+
+    // add event for new elements
+    const refuseFriendBtn = newDiv.querySelector('[btn-refuse-friend]');
+    refuseFriend(refuseFriendBtn);
+
+    const acceptFriendBtn = newDiv.querySelector('[btn-accept-friend]');
+    acceptFriend(acceptFriendBtn); 
+  } 
+})
+
+
+// END SERVER_RETURN_CURRENT_USER_INFO

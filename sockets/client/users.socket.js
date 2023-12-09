@@ -45,6 +45,16 @@ module.exports = async(req, res) => {
           userId: otherUserId,
           acceptFriendsLength: acceptFriendsLength
         }) 
+
+        // Send current user information to other user 
+        const currentUserInfo = await Users.findOne({
+          _id: currentUserId
+        }).select('id avatar fullName');
+
+        socket.broadcast.emit('SERVER_RETURN_CURRENT_USER_INFO', {
+          userId: otherUserId,
+          currentUserInfo: currentUserInfo
+        })
       })
 
       socket.on('CLIENT_CANCEL_FRIEND', async (otherUserId) => {
@@ -73,6 +83,18 @@ module.exports = async(req, res) => {
             $pull: { requestFriends: otherUserId }
           })
         }
+
+        // Get length of acceptFriends of other user and send to that user
+        const otherUser = await Users.findOne({
+          _id: otherUserId
+        })
+
+        const acceptFriendsLength = otherUser.acceptFriends.length;
+
+        socket.broadcast.emit('SERVER_RETURN_ACCEPT_FRIEND_LENGTH', {
+          userId: otherUserId,
+          acceptFriendsLength: acceptFriendsLength
+        })
       })
 
       socket.on('CLIENT_REFUSE_FRIEND', async (otherUserId) => {
