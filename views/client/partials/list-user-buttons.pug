@@ -15,4 +15,9 @@
     a(
       class='btn btn-primary m-1'
       href='/users/accept'
-    ) Friend requests
+    ) 
+      | Friend requests
+      span(
+        class='badge badge-light'
+        badge-users-accept=user.id
+      ) #{user.acceptFriends.length}

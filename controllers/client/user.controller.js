@@ -163,13 +163,11 @@ module.exports.loginPost = async (req, res) => {
     }
 
     // Save user_id to Cart collection
-    const userId = user.id;
-    const cartId = req.cookies.cartId;
 
     await Cart.updateOne({
-      _id: cartId
+      _id: req.cookies.cartId
     }, {
-      user_id: userId
+      user_id: user.id
     })
 
     res.cookie('tokenUser', user.tokenUser);

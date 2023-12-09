@@ -54,3 +54,13 @@ if (listAcceptFriendBtn.length > 0) {
   })
 }
 /* End handle event accept friend request */
+
+/* Get length of acceptFriend field */
+socket.on('SERVER_RETURN_ACCEPT_FRIEND_LENGTH', (data) => {
+  const userBadgeAccept = document.querySelector('[badge-users-accept]');
+  const userId = userBadgeAccept.getAttribute('badge-users-accept');
+
+  if (userId == data.userId) {
+    userBadgeAccept.innerHTML = data.acceptFriendsLength;
+  }
+})
