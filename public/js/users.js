@@ -83,11 +83,11 @@ socket.on('SERVER_RETURN_CURRENT_USER_INFO', (data) => {
   const userId = dataUsersAccept.getAttribute("data-users-accept");
 
   if (userId == data.userId) {
-    const newDiv = document.createElement('div');
-    newDiv.classList.add('col-6');
-    newDiv.setAttribute("data-users-accept", userId);
+    const userBox = document.createElement('div');
+    userBox.classList.add('col-6');
+    userBox.setAttribute("user-id", data.currentUserInfo._id);
 
-    newDiv.innerHTML = `
+    userBox.innerHTML = `
       <div class="box-user">
         <div class="inner-avatar">
           <img 
@@ -117,16 +117,32 @@ socket.on('SERVER_RETURN_CURRENT_USER_INFO', (data) => {
       </div>
     `;
 
-    dataUsersAccept.appendChild(newDiv);
+    dataUsersAccept.appendChild(userBox);
 
     // add event for new elements
-    const refuseFriendBtn = newDiv.querySelector('[btn-refuse-friend]');
+    const refuseFriendBtn = userBox.querySelector('[btn-refuse-friend]');
     refuseFriend(refuseFriendBtn);
 
-    const acceptFriendBtn = newDiv.querySelector('[btn-accept-friend]');
+    const acceptFriendBtn = userBox.querySelector('[btn-accept-friend]');
     acceptFriend(acceptFriendBtn); 
   } 
 })
-
-
 // END SERVER_RETURN_CURRENT_USER_INFO
+
+// SERVER_RETURN_USER_ID_CANCEL_FRIEND
+
+socket.on("SERVER_RETURN_USER_ID_CANCEL_FRIEND", (data) => {
+  const dataUsersAccept = document.querySelector('[data-users-accept]');
+  const userId = dataUsersAccept.getAttribute("data-users-accept");
+
+  if (userId == data.otherUserId) {
+    const userBoxRemove = dataUsersAccept.querySelector(`[user-id="${data.currentUserId}"]`);
+    if(userBoxRemove) {
+      dataUsersAccept.removeChild(userBoxRemove);
+    }
+  }
+})
+
+
+
+// END SERVER_RETURN_USER_ID_CANCEL_FRIEND

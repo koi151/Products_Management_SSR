@@ -95,6 +95,12 @@ module.exports = async(req, res) => {
           userId: otherUserId,
           acceptFriendsLength: acceptFriendsLength
         })
+
+        // Server return current user id to other user for cancle displaying user account 
+        socket.broadcast.emit('SERVER_RETURN_USER_ID_CANCEL_FRIEND', {
+          currentUserId: currentUserId,
+          otherUserId: otherUserId
+        })
       })
 
       socket.on('CLIENT_REFUSE_FRIEND', async (otherUserId) => {
@@ -124,7 +130,7 @@ module.exports = async(req, res) => {
           }, {
             $pull: { acceptFriends: otherUserId }
           })
-        }
+        }        
       })
 
       socket.on('CLIENT_ACCEPT_FRIEND', async (otherUserId) => {
