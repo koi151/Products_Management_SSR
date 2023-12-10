@@ -97,3 +97,35 @@ module.exports.accept = async (req, res) => {
     res.redirect("back");
   }
 }
+
+// [GET] /users/friend
+module.exports.friend = async (req, res) => {
+  try {
+    usersSocket(req, res);
+
+    const currentUserId = res.locals.user.id;
+    const currentUser = await Users.findOne({
+      _id: currentUserId,
+    })
+
+    const friendList = currentUser.friendList;
+
+    const friendListId = friendList.map(item => item.user_id)
+
+    const users = await Users.find({
+      _id: { $in: friendListId },
+      status: 'active',
+      deleted: false
+    }).select('fullName avatar onlineStatus')
+
+    res.render('client/pages/users/friends', {
+      pageTitle: 'Friend List',
+      users: users
+    })
+
+  } catch (error) {
+    console.log("ERROR OCCURRED:", error);
+    req.flash('error', 'Page is not exists, directed to home page');
+    res.redirect("back");
+  }
+}

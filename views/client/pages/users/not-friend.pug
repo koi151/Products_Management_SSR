@@ -7,12 +7,13 @@ block main
     include ../../partials/list-user-buttons.pug
 
     .row 
-      .col-12 
+      .col-12(class='mt-2') 
         +box-head('User List')
 
-    .row 
+    //-  first user.id is blobal variable, the next one is for loop
+    .row(data-users-not-friend=user.id)
       each user in users
-        .col-6 
+        .col-6(user-id=user.id) 
           div(class='box-user')
             div(class='inner-avatar')
               img(

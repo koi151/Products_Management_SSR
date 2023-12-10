@@ -1,0 +1,38 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+
+block main 
+  .container.my-3
+
+    include ../../partials/list-user-buttons.pug
+
+    .row
+      .col-12 
+        +box-head('Friend List')
+
+    .row
+      each user in users 
+        .col-6
+          div(class='box-user')
+            div(class='inner-avatar')
+              img(
+                src=(user.avatar ? user.avatar : '/images/img_avatar.png')
+                alt=user.fullName
+              )
+            div(class='inner-info')
+              div(class='inner-nsme') #{user.fullName}
+              div(class='inner-buttons')
+                a(
+                  href='#'
+                  class='btn btn-sm btn-primary mr-1'
+                ) Message
+            div(
+              class='inner-status'
+              status=user.onlineStatus
+            ) <i class='fa-solid fa-circle'></i>
+      
+
+
+    
+  block script 
+    script(type='module' src="/js/users.js") 

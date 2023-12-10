@@ -75,59 +75,74 @@ socket.on('SERVER_RETURN_ACCEPT_FRIEND_LENGTH', (data) => {
   }
 })
 
-// SERVER_RETURN_CURRENT_USER_INFO
-socket.on('SERVER_RETURN_CURRENT_USER_INFO', (data) => {
-  // display users information
+// SERVER_RETURN_INFO_ACCEPT_FRIEND
+socket.on('SERVER_RETURN_INFO_ACCEPT_FRIEND', (data) => {
+  // display users information - friend request page
 
   const dataUsersAccept = document.querySelector('[data-users-accept]');
-  const userId = dataUsersAccept.getAttribute("data-users-accept");
 
-  if (userId == data.userId) {
-    const userBox = document.createElement('div');
-    userBox.classList.add('col-6');
-    userBox.setAttribute("user-id", data.currentUserInfo._id);
-
-    userBox.innerHTML = `
-      <div class="box-user">
-        <div class="inner-avatar">
-          <img 
-            src="${data.currentUserInfo.avatar ? data.currentUserInfo.avatar : '/images/img_avatar.png'}" 
-            alt="${data.currentUserInfo.fullName}"
-          >
-        </div>
-        <div class="inner-info">
-          <div class="inner-name">
-            ${data.currentUserInfo.fullName}
+  if (dataUsersAccept) {
+    const userId = dataUsersAccept.getAttribute("data-users-accept");
+    if (userId == data.userId) {
+      const userBox = document.createElement('div');
+      userBox.classList.add('col-6');
+      userBox.setAttribute("user-id", data.currentUserInfo._id);
+  
+      userBox.innerHTML = `
+        <div class="box-user">
+          <div class="inner-avatar">
+            <img 
+              src="${data.currentUserInfo.avatar ? data.currentUserInfo.avatar : '/images/img_avatar.png'}" 
+              alt="${data.currentUserInfo.fullName}"
+            >
           </div>
-          <div class="inner-buttons">
-            <button class="btn btn-sm btn-primary mr-1" btn-accept-friend=${data.currentUserInfo._id}>
-              Accept
-            </button>
-            <button class="btn btn-sm btn-secondary mr-1" btn-refuse-friend=${data.currentUserInfo._id}>
-              Refuse
-            </button>
-            <button class="btn btn-sm btn-secondary mr-1" btn-deleted-friend="" disabled="">
-              Refused
-            </button>
-            <button class="btn btn-sm btn-secondary mr-1" btn-accepted-friend="" disabled="">
-              Accepted
-            </button>
+          <div class="inner-info">
+            <div class="inner-name">
+              ${data.currentUserInfo.fullName}
+            </div>
+            <div class="inner-buttons">
+              <button class="btn btn-sm btn-primary mr-1" btn-accept-friend=${data.currentUserInfo._id}>
+                Accept
+              </button>
+              <button class="btn btn-sm btn-secondary mr-1" btn-refuse-friend=${data.currentUserInfo._id}>
+                Refuse
+              </button>
+              <button class="btn btn-sm btn-secondary mr-1" btn-deleted-friend="" disabled="">
+                Refused
+              </button>
+              <button class="btn btn-sm btn-secondary mr-1" btn-accepted-friend="" disabled="">
+                Accepted
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    `;
+      `;
+  
+      dataUsersAccept.appendChild(userBox);
+  
+      // add event for new elements
+      const refuseFriendBtn = userBox.querySelector('[btn-refuse-friend]');
+      refuseFriend(refuseFriendBtn);
+  
+      const acceptFriendBtn = userBox.querySelector('[btn-accept-friend]');
+      acceptFriend(acceptFriendBtn); 
+    } 
+  }
 
-    dataUsersAccept.appendChild(userBox);
+  // User list page
+  const dataUsersNotFriend = document.querySelector('[data-users-not-friend]');
+  if (dataUsersNotFriend) {
+    const userId = dataUsersNotFriend.getAttribute("data-users-not-friend"); 
+    if (userId == data.userId) {
+      const userBoxRemove = dataUsersNotFriend.querySelector(`[user-id="${data.currentUserInfo._id}"]`);
+      if(userBoxRemove) {
+        dataUsersNotFriend.removeChild(userBoxRemove);
+      }
+    }
+  }
 
-    // add event for new elements
-    const refuseFriendBtn = userBox.querySelector('[btn-refuse-friend]');
-    refuseFriend(refuseFriendBtn);
-
-    const acceptFriendBtn = userBox.querySelector('[btn-accept-friend]');
-    acceptFriend(acceptFriendBtn); 
-  } 
 })
-// END SERVER_RETURN_CURRENT_USER_INFO
+// END SERVER_RETURN_INFO_ACCEPT_FRIEND
 
 // SERVER_RETURN_USER_ID_CANCEL_FRIEND
 

@@ -51,7 +51,7 @@ module.exports = async(req, res) => {
           _id: currentUserId
         }).select('id avatar fullName');
 
-        socket.broadcast.emit('SERVER_RETURN_CURRENT_USER_INFO', {
+        socket.broadcast.emit('SERVER_RETURN_INFO_ACCEPT_FRIEND', {
           userId: otherUserId,
           currentUserInfo: currentUserInfo
         })
