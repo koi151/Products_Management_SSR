@@ -10,9 +10,9 @@ block main
       .col-12 
         +box-head('Friend List')
 
-    .row
+    .row(data-users-friend)
       each user in users 
-        .col-6
+        .col-6(user-id=user.id)
           div(class='box-user')
             div(class='inner-avatar')
               img(
@@ -20,7 +20,7 @@ block main
                 alt=user.fullName
               )
             div(class='inner-info')
-              div(class='inner-nsme') #{user.fullName}
+              div(class='inner-name') #{user.fullName}
               div(class='inner-buttons')
                 a(
                   href='#'
@@ -30,9 +30,6 @@ block main
               class='inner-status'
               status=user.onlineStatus
             ) <i class='fa-solid fa-circle'></i>
-      
-
-
-    
+          
   block script 
     script(type='module' src="/js/users.js") 

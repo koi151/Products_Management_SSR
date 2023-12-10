@@ -23,6 +23,17 @@ const acceptFriend = (btn) => {
   })
 }
 
+// display online status badget real time (friends list page)
+const onlineBadgeDisplay = (onlineStatus, userId) => {
+  const dataUsersFriend = document.querySelector('[data-users-friend]');
+  if (dataUsersFriend) {
+    const userBox = dataUsersFriend.querySelector(`.col-6[user-id="${userId}"]`);
+    if (userBox) {
+      userBox.querySelector("[status]").setAttribute("status", onlineStatus);
+    }
+  }
+}
+
 
 /* Handle event add friend */
 const listAddFriendBtn = document.querySelectorAll('[btn-add-friend]');
@@ -157,7 +168,15 @@ socket.on("SERVER_RETURN_USER_ID_CANCEL_FRIEND", (data) => {
     }
   }
 })
-
-
-
 // END SERVER_RETURN_USER_ID_CANCEL_FRIEND
+
+
+// SERVER_RETURN_USER_ONLINE
+socket.on('SERVER_RETURN_USER_ONLINE', (userId) => {
+  onlineBadgeDisplay('online', userId);  
+});
+
+// END SERVER_RETURN_USER_ONLINE
+socket.on('SERVER_RETURN_USER_OFFLINE', (userId) => {
+  onlineBadgeDisplay('offline', userId)
+});

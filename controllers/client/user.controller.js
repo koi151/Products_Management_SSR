@@ -45,6 +45,10 @@ module.exports.logout = async (req, res) => {
     onlineStatus: 'offline'
   })
 
+  _io.once('connection', (socket) => {
+    socket.broadcast.emit('SERVER_RETURN_USER_OFFLINE', res.locals.user.id);
+  })
+
   req.flash('success', 'Account logged out')
   res.redirect('/')
 }
@@ -180,6 +184,10 @@ module.exports.loginPost = async (req, res) => {
       _id: user.id
     }, {
       onlineStatus: 'online'
+    })
+
+    _io.once('connection', (socket) => {
+      socket.broadcast.emit('SERVER_RETURN_USER_ONLINE', user.id)
     })
 
     res.cookie('tokenUser', user.tokenUser);
