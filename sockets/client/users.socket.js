@@ -1,4 +1,5 @@
 const Users = require('../../models/users.model');
+const ChatRoom = require('../../models/rooms-chat.model');
 
 module.exports = async(req, res) => {
   try {
@@ -142,6 +143,34 @@ module.exports = async(req, res) => {
           acceptFriends: otherUserId
         })
 
+        const otherUserExisted = await Users.findOne({
+          _id: otherUserId,
+          requestFriends: currentUserId
+        })
+
+        // create chat room
+        let chatRoom;
+
+        if (currentUserExisted && otherUserExisted) {
+          chatRoom = new ChatRoom({
+            roomType: 'friend',
+            users: [
+              {
+                user_id: currentUserId,
+                role: 'superAdmin'
+              },
+              {
+                user_id: otherUserId,
+                role: 'superAdmin'
+              }
+            ]
+          });
+
+          await chatRoom.save();
+          console.log("chatRoom:", chatRoom)
+        }
+        
+
         if (currentUserExisted) {
           await Users.updateOne({
             _id: currentUserId
@@ -149,7 +178,7 @@ module.exports = async(req, res) => {
             $push: {
               friendList: {
                 user_id: otherUserId,
-                room_chat_id: ""
+                room_chat_id: chatRoom.id
               }
             },
             $pull: { acceptFriends: otherUserId }
@@ -158,19 +187,15 @@ module.exports = async(req, res) => {
 
         // Add {user_id, room_chat_id } of CURRENT USER to friendList of OTHER USER
         // Remove id of CURRENT USER in acceptFriends feild of OTHER USER
-        const otherExisted = await Users.findOne({
-          _id: otherUserId,
-          requestFriends: currentUserId
-        })
 
-        if (otherExisted) {
+        if (otherUserExisted) {
           await Users.updateOne({
             _id: otherUserId
           }, {
             $push: {
               friendList: {
                 user_id: currentUserId,
-                room_chat_id: ""
+                room_chat_id: chatRoom.id
               }
             },
             $pull: { acceptFriends: currentUserId }

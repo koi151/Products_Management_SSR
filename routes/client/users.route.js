@@ -9,6 +9,6 @@ router.get("/request", controller.request);
 
 router.get("/accept", controller.accept);
 
-router.get("/friend", controller.friend);
+router.get("/friends", controller.friends);
 
 module.exports = router;

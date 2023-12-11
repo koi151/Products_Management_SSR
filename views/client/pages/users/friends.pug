@@ -23,7 +23,7 @@ block main
               div(class='inner-name') #{user.fullName}
               div(class='inner-buttons')
                 a(
-                  href='#'
+                  href=`/chat/${user.chatRoomId}`
                   class='btn btn-sm btn-primary mr-1'
                 ) Message
             div(

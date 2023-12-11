@@ -187,7 +187,8 @@ module.exports.loginPost = async (req, res) => {
     })
 
     _io.once('connection', (socket) => {
-      socket.broadcast.emit('SERVER_RETURN_USER_ONLINE', user.id)
+      socket.broadcast.emit('SERVER_RETURN_USER_ONLINE', user.id
+      )
     })
 
     res.cookie('tokenUser', user.tokenUser);
