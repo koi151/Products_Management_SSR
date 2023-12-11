@@ -1,4 +1,4 @@
-const Users = require('../../models/accounts.model');
+const Users = require('../../models/users.model');
 
 module.exports.authRequire = async (req, res, next) => {
   if (!req.cookies.tokenUser) {
@@ -7,7 +7,9 @@ module.exports.authRequire = async (req, res, next) => {
   }
 
   const user = await Users.findOne({
-    token: req.cookies.token
+    _id: res.locals.user.id,
+    tokenUser: req.cookies.tokenUser,
+    deleted: false
   })
 
   if (!user) {
