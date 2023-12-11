@@ -12,9 +12,7 @@ module.exports.allowAccess = async (req, res, next) => {
       'users.user_id': res.locals.user.id,
       deleted: false
     })
-  
-    console.log('check', allowAccessed)
-  
+    
     if (allowAccessed) {
       next();
     } else {
