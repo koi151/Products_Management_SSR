@@ -2,8 +2,12 @@ const express = require("express");
 const router = express.Router();
 
 const controller = require('../../controllers/client/chat.controller')
-// const authMiddleware = require('') // Add private route
+const chatMiddleware = require('../../middlewares/client/chat.middleware') 
 
-router.get('/', controller.index);
+router.get(
+  '/:chatRoomId',
+  chatMiddleware.allowAccess, 
+  controller.index
+);
 
 module.exports = router;

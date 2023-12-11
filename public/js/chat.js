@@ -22,10 +22,14 @@ if (formDataSend) {
       });
 
       e.target.elements.content.value = "";
-      upload.resetPreviewPanel();
-
       // hide the typing effect
-      socket.emit('CLIENT_SEND_MESSAGE', 'hidden');
+      setTimeout(() => {
+        socket.emit('CLIENT_SEND_TYPING', 'hidden');
+      }, 200)
+      
+      clearTimeout(timeOut); // 
+
+      upload.resetPreviewPanel();
     }
   })
 }
@@ -94,6 +98,7 @@ const showTyping = () => {
   timeOut = setTimeout(() => {
     socket.emit('CLIENT_SEND_TYPING', 'hidden');
   }, 3000)
+
 }
 
 // Imoji picker
@@ -149,8 +154,10 @@ if (typingListElements) {
             <span></span> 
           </div>
         `
+
         typingListElements.appendChild(boxTyping);
         chatBody.scrollTop = chatBody.scrollHeight;
+
       }
     } else {
       const boxTypingRemove = typingListElements.querySelector(`[user-id="${data.userId}"]`);

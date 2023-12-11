@@ -167,7 +167,6 @@ module.exports = async(req, res) => {
           });
 
           await chatRoom.save();
-          console.log("chatRoom:", chatRoom)
         }
         
 
